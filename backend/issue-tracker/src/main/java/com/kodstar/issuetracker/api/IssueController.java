@@ -12,14 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-/**
- * Created by Moon on 12/21/2020
- */
-
 @RestController
 public class IssueController {
 
-    private  final IssueService issueService;
+
+    private final IssueService issueService;
 
     @Autowired
     public IssueController(IssueService issueService) {
@@ -27,11 +24,9 @@ public class IssueController {
     }
 
     @PostMapping("/issue")
-    public ResponseEntity<Issue> createIssue(@Valid @NonNull @RequestBody Issue issue){
-
-        Issue savedIssue= issueService.createIssue(issue);
+    public ResponseEntity<Issue> createIssue(@Valid @NonNull @RequestBody Issue issue) {
+        Issue savedIssue = issueService.createIssue(issue);
         return new ResponseEntity<>(savedIssue, HttpStatus.OK);
-
     }
 
 

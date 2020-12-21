@@ -9,9 +9,6 @@ import org.springframework.validation.annotation.Validated;
 import javax.persistence.*;
 import java.io.Serializable;
 
-/**
- * Created by Moon on 12/20/2020
- */
 
 @Entity
 @Data
@@ -20,9 +17,6 @@ import java.io.Serializable;
 @Table(name = "T_ISSUE")
 
 public class Issue implements Serializable {
-
-    // TODO Look for generated strategy
-    // TODO validations
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
