@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="ProjectModuleManager">
-    <modules>
-      <module fileurl="file://$PROJECT_DIR$/backend/issue-tracker/issue-tracker.iml" filepath="$PROJECT_DIR$/backend/issue-tracker/issue-tracker.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/issue-tracker-2020-2.iml" filepath="$PROJECT_DIR$/.idea/issue-tracker-2020-2.iml" />
-    </modules>
-  </component>
-</project>
