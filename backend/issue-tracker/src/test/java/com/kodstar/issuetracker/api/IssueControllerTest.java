@@ -2,6 +2,7 @@ package com.kodstar.issuetracker.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kodstar.issuetracker.entity.Issue;
+import com.kodstar.issuetracker.entity.Label;
 import com.kodstar.issuetracker.service.IssueService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -46,8 +50,11 @@ class IssueControllerTest {
     }
     @Test
     public void TestCreateIssueShouldReturnAJsonObject() throws Exception {
+        Label label= new Label(45L,"testLabel");
+        Set<Label> setLabel= new HashSet<>();
+        setLabel.add(label);
 
-        Issue issue = new Issue(777L,"testTitle", "desc Test");
+        Issue issue = new Issue(777L,"testTitle", "desc Test", setLabel);
         Mockito.when(issueService.createIssue(Mockito.any(Issue.class))).thenReturn(issue);
         mvc.perform(MockMvcRequestBuilders.post("/issue")
                 .content(asJsonString(issue))
