@@ -1,5 +1,6 @@
 package com.kodstar.issuetracker.dto;
 
+import com.kodstar.issuetracker.entity.Label;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,5 +16,5 @@ public class IssueDTO {
     private Long id;
     private String title;
     private String description;
-    private Set<String> labels;
+    private Set<Label> labels;
 }
