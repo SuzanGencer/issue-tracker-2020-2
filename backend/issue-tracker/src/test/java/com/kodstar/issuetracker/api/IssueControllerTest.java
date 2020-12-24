@@ -19,7 +19,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
 import static org.hamcrest.Matchers.*;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -42,7 +44,7 @@ class IssueControllerTest {
     @MockBean
     IssueConverter issueConverter;
     private Issue issue;
-    ObjectMapper objectMapper=new ObjectMapper();
+    ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
     void setUp() {
@@ -50,22 +52,23 @@ class IssueControllerTest {
         issue.setDescription("desc2");
         issue.setTitle("tittle");
     }
+
     public static String asJsonString(final Object obj) {
         try {
             return new ObjectMapper().writeValueAsString(obj);
-        }catch (Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
     @Test
     public void TestCreateIssueShouldReturnAJsonObject() throws Exception {
-        Label label= new Label(45L,"testLabel");
-        Set<Label> setLabel= new HashSet<>();
+        Label label = new Label(45L, "testLabel");
+        Set<Label> setLabel = new HashSet<>();
         setLabel.add(label);
 
-        Issue issue = new Issue(777L,"testTitle", "desc Test", setLabel);
-        IssueDTO issueDTO = new IssueDTO(777L,"testTitle", "desc Test", setLabel);
+        Issue issue = new Issue(777L, "testTitle", "desc Test", setLabel);
+        IssueDTO issueDTO = new IssueDTO(777L, "testTitle", "desc Test", setLabel);
         Mockito.when(issueService.createIssue(Mockito.any(Issue.class))).thenReturn(issue);
         Mockito.when(issueConverter.convert(Mockito.any(Issue.class))).thenReturn(issueDTO);
         mvc.perform(MockMvcRequestBuilders.post("/issue")
@@ -74,17 +77,17 @@ class IssueControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id",is(777)))
-                .andExpect(jsonPath("$.title",is(issueDTO.getTitle())))
-                .andExpect(jsonPath("$.description",is(issueDTO.getDescription())));
+                .andExpect(jsonPath("$.id", is(777)))
+                .andExpect(jsonPath("$.title", is(issueDTO.getTitle())))
+                .andExpect(jsonPath("$.description", is(issueDTO.getDescription())));
     }
 
     @Test
     public void TestGetAllLabelsShouldReturnAJsonObject() throws Exception {
-        Label label1= new Label(45L,"testLabel1");
-        Label label2= new Label(55L,"testLabel2");
-        Label label3= new Label(65L,"testLabel3");
-        Set<Label> setLabel= new HashSet<>();
+        Label label1 = new Label(45L, "testLabel1");
+        Label label2 = new Label(55L, "testLabel2");
+        Label label3 = new Label(65L, "testLabel3");
+        Set<Label> setLabel = new HashSet<>();
         setLabel.add(label1);
         setLabel.add(label2);
         setLabel.add(label3);
@@ -115,15 +118,15 @@ class IssueControllerTest {
 
     @Test
     public void getAllIssuesShouldReturnAJsonObject() throws Exception {
-        Label label= new Label(45L,"testLabel");
-        Set<Label> setLabel= new HashSet<>();
+        Label label = new Label(45L, "testLabel");
+        Set<Label> setLabel = new HashSet<>();
         setLabel.add(label);
 
-        Issue issue = new Issue(777L,"testTitle", "desc Test", setLabel);
-        List<Issue> issueList=new ArrayList<>();
+        Issue issue = new Issue(777L, "testTitle", "desc Test", setLabel);
+        List<Issue> issueList = new ArrayList<>();
         issueList.add(issue);
-        IssueDTO issueDTO = new IssueDTO(777L,"testTitle", "desc Test", setLabel);
-        List<IssueDTO> issueDTOList=new ArrayList<>();
+        IssueDTO issueDTO = new IssueDTO(777L, "testTitle", "desc Test", setLabel);
+        List<IssueDTO> issueDTOList = new ArrayList<>();
         issueDTOList.add(issueDTO);
         Mockito.when(issueService.getAllIssues()).thenReturn(issueList);
         Mockito.when(issueConverter.convertAll(Mockito.any(List.class))).thenReturn(issueDTOList);
@@ -133,9 +136,9 @@ class IssueControllerTest {
                 .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$[0].title",is(issueDTOList.get(0).getTitle())))
-                .andExpect(jsonPath("$[0].id",is(777)))
-                .andExpect(jsonPath("$[0].description",is(issueDTOList.get(0).getDescription())));
+                .andExpect(jsonPath("$[0].title", is(issueDTOList.get(0).getTitle())))
+                .andExpect(jsonPath("$[0].id", is(777)))
+                .andExpect(jsonPath("$[0].description", is(issueDTOList.get(0).getDescription())));
 
     }
 }

@@ -8,13 +8,13 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class IssueConverter implements Converter<Issue, IssueDTO>{
+public class IssueConverter implements Converter<Issue, IssueDTO> {
     @Autowired
     private ModelMapper modelMapper;
 
     @Override
     public IssueDTO convert(Issue issue) {
-            IssueDTO issueDTO=modelMapper.map(issue,IssueDTO.class);
-            return issueDTO;
+        IssueDTO issueDTO = modelMapper.map(issue, IssueDTO.class);
+        return issueDTO;
     }
 }

@@ -22,53 +22,51 @@ import java.util.*;
 @CrossOrigin("*")
 public class IssueController {
 
-
     private final IssueService issueService;
     private final IssueConverter issueConverter;
     private final LabelService labelService;
 
     @Autowired
-    public IssueController(IssueService issueService, LabelService labelService,IssueConverter issueConverter) {
-      this.issueService = issueService;
-        this.issueConverter=issueConverter;
+    public IssueController(IssueService issueService, LabelService labelService, IssueConverter issueConverter) {
+        this.issueService = issueService;
+        this.issueConverter = issueConverter;
         this.labelService = labelService;
     }
 
     //Internal server error handled
 
     @PostMapping("/issue")
-    public ResponseEntity<IssueDTO> createIssue(@Valid @NonNull @RequestBody Issue issue){
+    public ResponseEntity<IssueDTO> createIssue(@Valid @NonNull @RequestBody Issue issue) {
 
-        if(issueService.findByTitle(issue.getTitle()) !=null)
-        {
+        if (issueService.findByTitle(issue.getTitle()) != null) {
             return new ResponseEntity("Issue is already exists", HttpStatus.BAD_REQUEST);
-        }else {
+        } else {
             try {
                 Issue savedIssue = issueService.createIssue(issue);
-                IssueDTO issueDTO=issueConverter.convert(savedIssue);
+                IssueDTO issueDTO = issueConverter.convert(savedIssue);
                 return new ResponseEntity<>(issueDTO, HttpStatus.OK);
 
-            } catch(Exception e) {
-            return new ResponseEntity("Db Error", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            } catch (Exception e) {
+                return new ResponseEntity("Db Error", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
 
 
         }
     }
+
     @GetMapping("/issues")
     public ResponseEntity<List<IssueDTO>> getAllIssues() {
-        List<IssueDTO> issueDTOList=issueConverter.convertAll(issueService.getAllIssues());
+        List<IssueDTO> issueDTOList = issueConverter.convertAll(issueService.getAllIssues());
         return new ResponseEntity<>(issueDTOList, HttpStatus.OK);
     }
-
 
 
     @GetMapping("issues/labels")
     public ResponseEntity<Set<Label>> getAllLabels() {
 
-        try{
+        try {
             return new ResponseEntity<>(labelService.getAllLabels(), HttpStatus.OK);
-        }catch(Exception e) {
+        } catch (Exception e) {
             return new ResponseEntity("Db Error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -87,7 +85,4 @@ public class IssueController {
         });
         return errors;
     }
-
-
-
 }
