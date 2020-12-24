@@ -31,14 +31,14 @@ public class IssueController {
     }
 
     @PostMapping("/issue")
-    public ResponseEntity<Issue> createIssue(@Valid @NonNull @RequestBody Issue issue){
+    public ResponseEntity<IssueDTO> createIssue(@Valid @NonNull @RequestBody Issue issue){
 
         if(issueService.findByTitle(issue.getTitle()) !=null)
         {
             return new ResponseEntity("Issue is already exists", HttpStatus.BAD_REQUEST);
         }else {
             Issue savedIssue = issueService.createIssue(issue);
-            return new ResponseEntity<>(savedIssue, HttpStatus.OK);
+            return new ResponseEntity<>(issueConverter.convert(savedIssue), HttpStatus.OK);
         }
     }
     @GetMapping("/issues")

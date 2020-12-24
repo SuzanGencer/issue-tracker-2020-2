@@ -16,5 +16,4 @@ public class IssueDTO {
     private String title;
     private String description;
     private Set<String> labels;
-
 }
