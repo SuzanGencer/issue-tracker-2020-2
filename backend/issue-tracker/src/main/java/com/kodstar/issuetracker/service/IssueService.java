@@ -15,4 +15,8 @@ public interface IssueService {
 
    List<Issue> getAllIssues();
 
+   void editIssue(Long issueId, Issue issue);
+
+   void deleteIssue(Long issueId);
+
 }

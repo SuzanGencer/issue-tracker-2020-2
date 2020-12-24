@@ -19,7 +19,7 @@ import java.util.Set;
 public class Label {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     //LabelName cant be @id because one label can be used with many issues. so it musn t be unique at the issue creation time.

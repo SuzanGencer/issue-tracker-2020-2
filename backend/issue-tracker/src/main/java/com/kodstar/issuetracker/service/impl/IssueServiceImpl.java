@@ -20,7 +20,7 @@ public class IssueServiceImpl implements IssueService {
         this.issueRepository = issueRepository;
     }
 
-    public Issue createIssue(Issue issue){
+    public Issue createIssue(Issue issue) {
         return issueRepository.save(issue);
 
     }
@@ -30,7 +30,18 @@ public class IssueServiceImpl implements IssueService {
         return (List<Issue>) issueRepository.findAll();
     }
 
-    public Issue findByTitle(String title){
+    @Override
+    public void editIssue(Long issueId, Issue issue) {
+        issueRepository.save(issue);
+    }
+
+    @Override
+    public void deleteIssue(Long issueId) {
+        issueRepository.deleteById(issueId);
+    }
+
+    @Override
+    public Issue findByTitle(String title) {
         return issueRepository.findByTitle(title);
     }
 

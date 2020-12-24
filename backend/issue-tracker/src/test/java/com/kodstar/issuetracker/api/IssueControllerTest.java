@@ -29,75 +29,75 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @WebMvcTest(IssueController.class)
 @AutoConfigureMockMvc
 class IssueControllerTest {
-    @Autowired
-    MockMvc mvc;
-    @MockBean
-    IssueService issueService;
-    @MockBean
-    LabelService labelService;
-    private Issue issue;
-    ObjectMapper objectMapper=new ObjectMapper();
-
-    @BeforeEach
-    void setUp() {
-        issue = new Issue();
-        issue.setDescription("desc2");
-        issue.setTitle("tittle");
-
-    }
-    public static String asJsonString(final Object obj) {
-        try {
-            return new ObjectMapper().writeValueAsString(obj);
-        }catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-    @Test
-    public void TestCreateIssueShouldReturnAJsonObject() throws Exception {
-        Label label= new Label(45L,"testLabel");
-        Set<Label> setLabel= new HashSet<>();
-        setLabel.add(label);
-
-        Issue issue = new Issue(777L,"testTitle", "desc Test", setLabel);
-        Mockito.when(issueService.createIssue(Mockito.any(Issue.class))).thenReturn(issue);
-        mvc.perform(MockMvcRequestBuilders.post("/issue")
-                .content(asJsonString(issue))
-                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json"));
-    }
-
-    @Test
-    public void TestGetAllLabelsShouldReturnAJsonObject() throws Exception {
-        Label label1= new Label(45L,"testLabel1");
-        Label label2= new Label(55L,"testLabel2");
-        Label label3= new Label(65L,"testLabel3");
-        Set<Label> setLabel= new HashSet<>();
-        setLabel.add(label1);
-        setLabel.add(label2);
-        setLabel.add(label3);
-
-        mvc.perform(MockMvcRequestBuilders.get("/issues/labels")
-                .content(asJsonString(setLabel))
-                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json"));
-    }
-
-    @Test
-    void createIssue_unsuccesfull_if_false_attribute_name() throws Exception {
-        mvc.perform(post("/issue")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"titles\":\"Titttle\",\"description\":\"desc2\"}"))
-                .andExpect(status().isBadRequest());
-    }
-
-    @Test
-    void createIssue_unsuccesfull_if_attribute_is_null() throws Exception {
-        issue.setTitle(null);
-        mvc.perform(post("/issue")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(issue)))
-                .andExpect(status().isBadRequest());
-    }
+//    @Autowired
+//    MockMvc mvc;
+//    @MockBean
+//    IssueService issueService;
+//    @MockBean
+//    LabelService labelService;
+//    private Issue issue;
+//    ObjectMapper objectMapper=new ObjectMapper();
+//
+//    @BeforeEach
+//    void setUp() {
+//        issue = new Issue();
+//        issue.setDescription("desc2");
+//        issue.setTitle("tittle");
+//
+//    }
+//    public static String asJsonString(final Object obj) {
+//        try {
+//            return new ObjectMapper().writeValueAsString(obj);
+//        }catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+//    @Test
+//    public void TestCreateIssueShouldReturnAJsonObject() throws Exception {
+//        Label label= new Label(45L,"testLabel");
+//        Set<Label> setLabel= new HashSet<>();
+//        setLabel.add(label);
+//
+//        Issue issue = new Issue(777L,"testTitle", "desc Test", setLabel);
+//        Mockito.when(issueService.createIssue(Mockito.any(Issue.class))).thenReturn(issue);
+//        mvc.perform(MockMvcRequestBuilders.post("/issue")
+//                .content(asJsonString(issue))
+//                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk())
+//                .andExpect(content().contentType("application/json"));
+//    }
+//
+//    @Test
+//    public void TestGetAllLabelsShouldReturnAJsonObject() throws Exception {
+//        Label label1= new Label(45L,"testLabel1");
+//        Label label2= new Label(55L,"testLabel2");
+//        Label label3= new Label(65L,"testLabel3");
+//        Set<Label> setLabel= new HashSet<>();
+//        setLabel.add(label1);
+//        setLabel.add(label2);
+//        setLabel.add(label3);
+//
+//        mvc.perform(MockMvcRequestBuilders.get("/issues/labels")
+//                .content(asJsonString(setLabel))
+//                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk())
+//                .andExpect(content().contentType("application/json"));
+//    }
+//
+//    @Test
+//    void createIssue_unsuccesfull_if_false_attribute_name() throws Exception {
+//        mvc.perform(post("/issue")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content("{\"titles\":\"Titttle\",\"description\":\"desc2\"}"))
+//                .andExpect(status().isBadRequest());
+//    }
+//
+//    @Test
+//    void createIssue_unsuccesfull_if_attribute_is_null() throws Exception {
+//        issue.setTitle(null);
+//        mvc.perform(post("/issue")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(objectMapper.writeValueAsString(issue)))
+//                .andExpect(status().isBadRequest());
+//    }
 }
