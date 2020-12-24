@@ -1,8 +1,10 @@
 package com.kodstar.issuetracker.api;
 
+import com.kodstar.issuetracker.dto.IssueDTO;
 import com.kodstar.issuetracker.entity.Issue;
 import com.kodstar.issuetracker.entity.Label;
 import com.kodstar.issuetracker.service.IssueService;
+import com.kodstar.issuetracker.utils.IssueConverter;
 import org.springframework.lang.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,10 +22,12 @@ public class IssueController {
 
 
     private final IssueService issueService;
+    private final IssueConverter issueConverter;
 
     @Autowired
-    public IssueController(IssueService issueService) {
+    public IssueController(IssueService issueService, IssueConverter issueConverter) {
         this.issueService = issueService;
+        this.issueConverter=issueConverter;
     }
 
     @PostMapping("/issue")
@@ -36,6 +40,11 @@ public class IssueController {
             Issue savedIssue = issueService.createIssue(issue);
             return new ResponseEntity<>(savedIssue, HttpStatus.OK);
         }
+    }
+    @GetMapping("/issues")
+    public ResponseEntity<List<IssueDTO>> getAllIssues() {
+        List<IssueDTO> issueDTOList=issueConverter.convertAll(issueService.getAllIssues());
+        return new ResponseEntity<>(issueDTOList, HttpStatus.OK);
     }
 /*
 // This part written simply for only test the getAllLabels
