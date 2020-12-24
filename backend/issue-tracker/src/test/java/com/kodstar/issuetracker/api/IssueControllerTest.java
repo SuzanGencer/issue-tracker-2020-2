@@ -5,6 +5,7 @@ import com.kodstar.issuetracker.dto.IssueDTO;
 import com.kodstar.issuetracker.entity.Issue;
 import com.kodstar.issuetracker.entity.Label;
 import com.kodstar.issuetracker.service.IssueService;
+import com.kodstar.issuetracker.service.LabelService;
 import com.kodstar.issuetracker.utils.IssueConverter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +20,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.hamcrest.Matchers.*;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -38,6 +38,8 @@ class IssueControllerTest {
     @MockBean
     IssueService issueService;
     @MockBean
+    LabelService labelService;
+    @MockBean
     IssueConverter issueConverter;
     private Issue issue;
     ObjectMapper objectMapper=new ObjectMapper();
@@ -55,6 +57,7 @@ class IssueControllerTest {
             throw new RuntimeException(e);
         }
     }
+
     @Test
     public void TestCreateIssueShouldReturnAJsonObject() throws Exception {
         Label label= new Label(45L,"testLabel");
@@ -75,6 +78,24 @@ class IssueControllerTest {
                 .andExpect(jsonPath("$.title",is(issueDTO.getTitle())))
                 .andExpect(jsonPath("$.description",is(issueDTO.getDescription())));
     }
+
+    @Test
+    public void TestGetAllLabelsShouldReturnAJsonObject() throws Exception {
+        Label label1= new Label(45L,"testLabel1");
+        Label label2= new Label(55L,"testLabel2");
+        Label label3= new Label(65L,"testLabel3");
+        Set<Label> setLabel= new HashSet<>();
+        setLabel.add(label1);
+        setLabel.add(label2);
+        setLabel.add(label3);
+
+        mvc.perform(MockMvcRequestBuilders.get("/issues/labels")
+                .content(asJsonString(setLabel))
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json"));
+    }
+
     @Test
     void createIssue_unsuccesfull_if_false_attribute_name() throws Exception {
         mvc.perform(post("/issue")
@@ -82,6 +103,7 @@ class IssueControllerTest {
                 .content("{\"titles\":\"Titttle\",\"description\":\"desc2\"}"))
                 .andExpect(status().isBadRequest());
     }
+
     @Test
     void createIssue_unsuccesfull_if_attribute_is_null() throws Exception {
         issue.setTitle(null);
@@ -90,6 +112,7 @@ class IssueControllerTest {
                 .content(objectMapper.writeValueAsString(issue)))
                 .andExpect(status().isBadRequest());
     }
+
     @Test
     public void getAllIssuesShouldReturnAJsonObject() throws Exception {
         Label label= new Label(45L,"testLabel");

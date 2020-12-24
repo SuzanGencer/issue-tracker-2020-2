@@ -4,6 +4,7 @@ import com.kodstar.issuetracker.dto.IssueDTO;
 import com.kodstar.issuetracker.entity.Issue;
 import com.kodstar.issuetracker.entity.Label;
 import com.kodstar.issuetracker.service.IssueService;
+import com.kodstar.issuetracker.service.LabelService;
 import com.kodstar.issuetracker.utils.IssueConverter;
 import org.springframework.lang.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,17 +19,22 @@ import java.util.*;
 
 
 @RestController
+@CrossOrigin("*")
 public class IssueController {
 
 
     private final IssueService issueService;
     private final IssueConverter issueConverter;
+    private final LabelService labelService;
 
     @Autowired
-    public IssueController(IssueService issueService, IssueConverter issueConverter) {
-        this.issueService = issueService;
+    public IssueController(IssueService issueService, LabelService labelService,IssueConverter issueConverter) {
+      this.issueService = issueService;
         this.issueConverter=issueConverter;
+        this.labelService = labelService;
     }
+
+    //Internal server error handled
 
     @PostMapping("/issue")
     public ResponseEntity<IssueDTO> createIssue(@Valid @NonNull @RequestBody Issue issue){
@@ -37,9 +43,16 @@ public class IssueController {
         {
             return new ResponseEntity("Issue is already exists", HttpStatus.BAD_REQUEST);
         }else {
-            Issue savedIssue = issueService.createIssue(issue);
-            IssueDTO issueDTO=issueConverter.convert(savedIssue);
-            return new ResponseEntity<>(issueDTO, HttpStatus.OK);
+            try {
+                Issue savedIssue = issueService.createIssue(issue);
+                IssueDTO issueDTO=issueConverter.convert(savedIssue);
+                return new ResponseEntity<>(issueDTO, HttpStatus.OK);
+
+            } catch(Exception e) {
+            return new ResponseEntity("Db Error", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+
         }
     }
     @GetMapping("/issues")
@@ -47,36 +60,19 @@ public class IssueController {
         List<IssueDTO> issueDTOList=issueConverter.convertAll(issueService.getAllIssues());
         return new ResponseEntity<>(issueDTOList, HttpStatus.OK);
     }
-/*
-// This part written simply for only test the getAllLabels
 
-    @GetMapping("/issues")
-    public ResponseEntity<List<Issue>> getAllIssues(){
-        List<Issue> allIssues = new ArrayList<>();
-        allIssues = issueService.getAllIssues();
 
-        return new ResponseEntity<>(allIssues, HttpStatus.OK);
-    }
 
-    @GetMapping("/issues/labels")
-    public ResponseEntity<Set<Label>> getAllLabels(){
+    @GetMapping("issues/labels")
+    public ResponseEntity<Set<Label>> getAllLabels() {
 
-        List<Issue> allIssues = new ArrayList<>();
-        allIssues = issueService.getAllIssues();
-
-        Set<Label> labels = new HashSet<>();
-
-        for (Issue issue: allIssues) {
-            for (Label label:issue.getLabels()) {
-                labels.add(label);
-            }
+        try{
+            return new ResponseEntity<>(labelService.getAllLabels(), HttpStatus.OK);
+        }catch(Exception e) {
+            return new ResponseEntity("Db Error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        return new ResponseEntity<>(labels, HttpStatus.OK);
     }
-
-    */
-
 
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
