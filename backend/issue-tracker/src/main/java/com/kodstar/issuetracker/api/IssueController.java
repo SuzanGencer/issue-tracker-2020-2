@@ -3,6 +3,7 @@ package com.kodstar.issuetracker.api;
 import com.kodstar.issuetracker.entity.Issue;
 import com.kodstar.issuetracker.entity.Label;
 import com.kodstar.issuetracker.service.IssueService;
+import com.kodstar.issuetracker.service.LabelService;
 import org.springframework.lang.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,15 +17,20 @@ import java.util.*;
 
 
 @RestController
+@CrossOrigin("*")
 public class IssueController {
 
 
     private final IssueService issueService;
+    private final LabelService labelService;
 
     @Autowired
-    public IssueController(IssueService issueService) {
+    public IssueController(IssueService issueService, LabelService labelService) {
         this.issueService = issueService;
+        this.labelService = labelService;
     }
+
+    //Internal server error handled
 
     @PostMapping("/issue")
     public ResponseEntity<Issue> createIssue(@Valid @NonNull @RequestBody Issue issue){
@@ -33,40 +39,29 @@ public class IssueController {
         {
             return new ResponseEntity("Issue is already exists", HttpStatus.BAD_REQUEST);
         }else {
-            Issue savedIssue = issueService.createIssue(issue);
-            return new ResponseEntity<>(savedIssue, HttpStatus.OK);
-        }
-    }
-/*
-// This part written simply for only test the getAllLabels
+            try {
+                Issue savedIssue = issueService.createIssue(issue);
+                return new ResponseEntity<>(savedIssue, HttpStatus.OK);
 
-    @GetMapping("/issues")
-    public ResponseEntity<List<Issue>> getAllIssues(){
-        List<Issue> allIssues = new ArrayList<>();
-        allIssues = issueService.getAllIssues();
-
-        return new ResponseEntity<>(allIssues, HttpStatus.OK);
-    }
-
-    @GetMapping("/issues/labels")
-    public ResponseEntity<Set<Label>> getAllLabels(){
-
-        List<Issue> allIssues = new ArrayList<>();
-        allIssues = issueService.getAllIssues();
-
-        Set<Label> labels = new HashSet<>();
-
-        for (Issue issue: allIssues) {
-            for (Label label:issue.getLabels()) {
-                labels.add(label);
-            }
+            } catch(Exception e) {
+            return new ResponseEntity("Db Error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        return new ResponseEntity<>(labels, HttpStatus.OK);
+        }
     }
 
-    */
 
+
+    @GetMapping("issues/labels")
+    public ResponseEntity<Set<Label>> getAllLabels() {
+
+        try{
+            return new ResponseEntity<>(labelService.getAllLabels(), HttpStatus.OK);
+        }catch(Exception e) {
+            return new ResponseEntity("Db Error", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
 
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

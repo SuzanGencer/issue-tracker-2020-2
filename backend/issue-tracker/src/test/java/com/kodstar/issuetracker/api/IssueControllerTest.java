@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kodstar.issuetracker.entity.Issue;
 import com.kodstar.issuetracker.entity.Label;
 import com.kodstar.issuetracker.service.IssueService;
+import com.kodstar.issuetracker.service.LabelService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -32,6 +33,8 @@ class IssueControllerTest {
     MockMvc mvc;
     @MockBean
     IssueService issueService;
+    @MockBean
+    LabelService labelService;
     private Issue issue;
     ObjectMapper objectMapper=new ObjectMapper();
 
@@ -40,6 +43,7 @@ class IssueControllerTest {
         issue = new Issue();
         issue.setDescription("desc2");
         issue.setTitle("tittle");
+
     }
     public static String asJsonString(final Object obj) {
         try {
@@ -62,6 +66,24 @@ class IssueControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json"));
     }
+
+    @Test
+    public void TestGetAllLabelsShouldReturnAJsonObject() throws Exception {
+        Label label1= new Label(45L,"testLabel1");
+        Label label2= new Label(55L,"testLabel2");
+        Label label3= new Label(65L,"testLabel3");
+        Set<Label> setLabel= new HashSet<>();
+        setLabel.add(label1);
+        setLabel.add(label2);
+        setLabel.add(label3);
+
+        mvc.perform(MockMvcRequestBuilders.get("/issues/labels")
+                .content(asJsonString(setLabel))
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json"));
+    }
+
     @Test
     void createIssue_unsuccesfull_if_false_attribute_name() throws Exception {
         mvc.perform(post("/issue")
@@ -69,6 +91,7 @@ class IssueControllerTest {
                 .content("{\"titles\":\"Titttle\",\"description\":\"desc2\"}"))
                 .andExpect(status().isBadRequest());
     }
+
     @Test
     void createIssue_unsuccesfull_if_attribute_is_null() throws Exception {
         issue.setTitle(null);
