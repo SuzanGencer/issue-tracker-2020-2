@@ -14,4 +14,5 @@ public interface IssueService {
    Issue findByTitle(String title);
 
    List<Issue> getAllIssues();
+
 }

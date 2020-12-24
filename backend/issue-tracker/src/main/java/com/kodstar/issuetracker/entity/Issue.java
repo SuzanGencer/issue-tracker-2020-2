@@ -15,8 +15,6 @@ import java.util.List;
 import java.util.Set;
 
 
-
-
 @Entity
 @Data
 @AllArgsConstructor
@@ -30,7 +28,7 @@ public class Issue implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Column(unique=true, columnDefinition = "varchar(250)")
+    @Column(unique=true, columnDefinition = "varchar(250)" )
     @NotBlank(message = "invalid input, Title can't be null")
     private String title;
 
