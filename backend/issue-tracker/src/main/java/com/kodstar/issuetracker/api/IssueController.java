@@ -38,7 +38,8 @@ public class IssueController {
             return new ResponseEntity("Issue is already exists", HttpStatus.BAD_REQUEST);
         }else {
             Issue savedIssue = issueService.createIssue(issue);
-            return new ResponseEntity<>(issueConverter.convert(savedIssue), HttpStatus.OK);
+            IssueDTO issueDTO=issueConverter.convert(savedIssue);
+            return new ResponseEntity<>(issueDTO, HttpStatus.OK);
         }
     }
     @GetMapping("/issues")

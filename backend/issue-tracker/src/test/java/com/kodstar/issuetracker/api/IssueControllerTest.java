@@ -18,8 +18,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import static org.hamcrest.Matchers.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -59,12 +62,18 @@ class IssueControllerTest {
         setLabel.add(label);
 
         Issue issue = new Issue(777L,"testTitle", "desc Test", setLabel);
+        IssueDTO issueDTO = new IssueDTO(777L,"testTitle", "desc Test", setLabel);
         Mockito.when(issueService.createIssue(Mockito.any(Issue.class))).thenReturn(issue);
+        Mockito.when(issueConverter.convert(Mockito.any(Issue.class))).thenReturn(issueDTO);
         mvc.perform(MockMvcRequestBuilders.post("/issue")
                 .content(asJsonString(issue))
-                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-                //.andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id",is(777)))
+                .andExpect(jsonPath("$.title",is(issueDTO.getTitle())))
+                .andExpect(jsonPath("$.description",is(issueDTO.getDescription())));
     }
     @Test
     void createIssue_unsuccesfull_if_false_attribute_name() throws Exception {
@@ -80,5 +89,30 @@ class IssueControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(issue)))
                 .andExpect(status().isBadRequest());
+    }
+    @Test
+    public void getAllIssuesShouldReturnAJsonObject() throws Exception {
+        Label label= new Label(45L,"testLabel");
+        Set<Label> setLabel= new HashSet<>();
+        setLabel.add(label);
+
+        Issue issue = new Issue(777L,"testTitle", "desc Test", setLabel);
+        List<Issue> issueList=new ArrayList<>();
+        issueList.add(issue);
+        IssueDTO issueDTO = new IssueDTO(777L,"testTitle", "desc Test", setLabel);
+        List<IssueDTO> issueDTOList=new ArrayList<>();
+        issueDTOList.add(issueDTO);
+        Mockito.when(issueService.getAllIssues()).thenReturn(issueList);
+        Mockito.when(issueConverter.convertAll(Mockito.any(List.class))).thenReturn(issueDTOList);
+
+        mvc.perform(MockMvcRequestBuilders.get("/issues")
+                .content(asJsonString(issue))
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].title",is(issueDTOList.get(0).getTitle())))
+                .andExpect(jsonPath("$[0].id",is(777)))
+                .andExpect(jsonPath("$[0].description",is(issueDTOList.get(0).getDescription())));
+
     }
 }

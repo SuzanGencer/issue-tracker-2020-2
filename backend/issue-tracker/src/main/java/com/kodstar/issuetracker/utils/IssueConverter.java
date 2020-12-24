@@ -4,10 +4,10 @@ import com.kodstar.issuetracker.dto.IssueDTO;
 import com.kodstar.issuetracker.entity.Issue;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 
-@Component
+@Service
 public class IssueConverter implements Converter<Issue, IssueDTO>{
     @Autowired
     private ModelMapper modelMapper;
