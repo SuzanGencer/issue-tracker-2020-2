@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 @Service
@@ -22,11 +21,10 @@ public class LabelServiceImpl implements LabelService {
 
     @Override
     public Set<Label> getAllLabels() {
-       Set<Label> labelSet = new HashSet<>();
-        for (Label label:labelRepository.findAll() ) {
+        Set<Label> labelSet = new HashSet<>();
+        for (Label label : labelRepository.findAll()) {
             labelSet.add(label);
-       }
-
+        }
         return labelSet;
     }
 }

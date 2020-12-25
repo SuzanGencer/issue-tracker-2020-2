@@ -1,9 +1,11 @@
 package com.kodstar.issuetracker.api;
 
+import com.kodstar.issuetracker.dto.IssueDTO;
 import com.kodstar.issuetracker.entity.Issue;
 import com.kodstar.issuetracker.entity.Label;
 import com.kodstar.issuetracker.service.IssueService;
 import com.kodstar.issuetracker.service.LabelService;
+import com.kodstar.issuetracker.utils.IssueConverter;
 import org.springframework.lang.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,44 +22,51 @@ import java.util.*;
 @CrossOrigin("*")
 public class IssueController {
 
-
     private final IssueService issueService;
+    private final IssueConverter issueConverter;
     private final LabelService labelService;
 
     @Autowired
-    public IssueController(IssueService issueService, LabelService labelService) {
+    public IssueController(IssueService issueService, LabelService labelService, IssueConverter issueConverter) {
         this.issueService = issueService;
+        this.issueConverter = issueConverter;
         this.labelService = labelService;
     }
 
     //Internal server error handled
 
     @PostMapping("/issue")
-    public ResponseEntity<Issue> createIssue(@Valid @NonNull @RequestBody Issue issue){
+    public ResponseEntity<IssueDTO> createIssue(@Valid @NonNull @RequestBody Issue issue) {
 
-        if(issueService.findByTitle(issue.getTitle()) !=null)
-        {
+        if (issueService.findByTitle(issue.getTitle()) != null) {
             return new ResponseEntity("Issue is already exists", HttpStatus.BAD_REQUEST);
-        }else {
+        } else {
             try {
                 Issue savedIssue = issueService.createIssue(issue);
-                return new ResponseEntity<>(savedIssue, HttpStatus.OK);
+                IssueDTO issueDTO = issueConverter.convert(savedIssue);
+                return new ResponseEntity<>(issueDTO, HttpStatus.OK);
 
-            } catch(Exception e) {
-            return new ResponseEntity("Db Error", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            } catch (Exception e) {
+                return new ResponseEntity("Db Error", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+
 
         }
     }
 
+    @GetMapping("/issues")
+    public ResponseEntity<List<IssueDTO>> getAllIssues() {
+        List<IssueDTO> issueDTOList = issueConverter.convertAll(issueService.getAllIssues());
+        return new ResponseEntity<>(issueDTOList, HttpStatus.OK);
+    }
 
 
     @GetMapping("issues/labels")
     public ResponseEntity<Set<Label>> getAllLabels() {
 
-        try{
+        try {
             return new ResponseEntity<>(labelService.getAllLabels(), HttpStatus.OK);
-        }catch(Exception e) {
+        } catch (Exception e) {
             return new ResponseEntity("Db Error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -76,7 +85,4 @@ public class IssueController {
         });
         return errors;
     }
-
-
-
 }
