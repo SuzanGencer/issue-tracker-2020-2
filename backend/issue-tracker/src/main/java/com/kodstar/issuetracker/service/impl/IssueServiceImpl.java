@@ -30,6 +30,17 @@ public class IssueServiceImpl implements IssueService {
         return (List<Issue>) issueRepository.findAll();
     }
 
+    @Override
+    public void editIssue(Long issueId, Issue issue) {
+        issueRepository.save(issue);
+    }
+
+    @Override
+    public void deleteIssue(Long issueId) {
+        issueRepository.deleteById(issueId);
+    }
+
+    @Override
     public Issue findByTitle(String title) {
         return issueRepository.findByTitle(title);
     }

@@ -11,5 +11,9 @@ public interface IssueService {
 
     Issue findByTitle(String title);
 
+    void editIssue(Long issueId, Issue issue);
+
+    void deleteIssue(Long issueId);
+ 
     List<Issue> getAllIssues();
 }

@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.*;
 
@@ -35,7 +34,16 @@ public class IssueController {
 
     //Internal server error handled
 
+    @GetMapping("/issues")
+    public ResponseEntity<List<Issue>> getAllIssues() {
+        List<Issue> allIssues;
+        allIssues = issueService.getAllIssues();
+        return new ResponseEntity<>(allIssues, HttpStatus.OK);
+    }
+
+
     @PostMapping("/issue")
+
     public ResponseEntity<IssueDTO> createIssue(@Valid @NonNull @RequestBody Issue issue) {
 
         if (issueService.findByTitle(issue.getTitle()) != null) {
@@ -50,7 +58,6 @@ public class IssueController {
                 return new ResponseEntity("Db Error", HttpStatus.INTERNAL_SERVER_ERROR);
             }
 
-
         }
     }
 
@@ -59,7 +66,6 @@ public class IssueController {
         List<IssueDTO> issueDTOList = issueConverter.convertAll(issueService.getAllIssues());
         return new ResponseEntity<>(issueDTOList, HttpStatus.OK);
     }
-
 
     @GetMapping("issues/labels")
     public ResponseEntity<Set<Label>> getAllLabels() {
@@ -72,6 +78,15 @@ public class IssueController {
 
     }
 
+    @PutMapping("issue/{issueId}")
+    public void editIssue(@PathVariable("issueId") Long issueId, @RequestBody Issue issue) {
+        issueService.editIssue(issueId, issue);
+    }
+
+    @DeleteMapping("issue/{issueId}")
+    public void deleteIssue(@PathVariable Long issueId) {
+        issueService.deleteIssue(issueId);
+    }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -85,4 +100,5 @@ public class IssueController {
         });
         return errors;
     }
+
 }
