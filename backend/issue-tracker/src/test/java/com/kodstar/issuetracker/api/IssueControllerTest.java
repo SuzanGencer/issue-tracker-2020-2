@@ -3,6 +3,7 @@ package com.kodstar.issuetracker.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kodstar.issuetracker.dto.IssueDTO;
 import com.kodstar.issuetracker.entity.Issue;
+import com.kodstar.issuetracker.entity.IssueStatus;
 import com.kodstar.issuetracker.entity.Label;
 import com.kodstar.issuetracker.service.IssueService;
 import com.kodstar.issuetracker.service.LabelService;
@@ -45,12 +46,19 @@ class IssueControllerTest {
     IssueConverter issueConverter;
     private Issue issue;
     ObjectMapper objectMapper = new ObjectMapper();
+    private IssueDTO issueDTO;
 
     @BeforeEach
     void setUp() {
+        Label label = new Label(45L, "testLabel");
+        Set<Label> labels = new HashSet<>();
+        labels.add(label);
         issue = new Issue();
-        issue.setDescription("desc2");
-        issue.setTitle("tittle");
+        issue.setId(777L);
+        issue.setTitle("Test");
+        issue.setDescription("Test text");
+        issue.setLabels(labels);
+        issueDTO = new IssueDTO(777L, "testTitle", "desc Test", labels);
     }
 
     public static String asJsonString(final Object obj) {
@@ -63,12 +71,6 @@ class IssueControllerTest {
 
     @Test
     public void TestCreateIssueShouldReturnAJsonObject() throws Exception {
-        Label label = new Label(45L, "testLabel");
-        Set<Label> setLabel = new HashSet<>();
-        setLabel.add(label);
-
-        Issue issue = new Issue(777L, "testTitle", "desc Test", setLabel);
-        IssueDTO issueDTO = new IssueDTO(777L, "testTitle", "desc Test", setLabel);
         Mockito.when(issueService.createIssue(Mockito.any(Issue.class))).thenReturn(issue);
         Mockito.when(issueConverter.convert(Mockito.any(Issue.class))).thenReturn(issueDTO);
         mvc.perform(MockMvcRequestBuilders.post("/issue")
@@ -118,14 +120,8 @@ class IssueControllerTest {
 
     @Test
     public void getAllIssuesShouldReturnAJsonObject() throws Exception {
-        Label label = new Label(45L, "testLabel");
-        Set<Label> setLabel = new HashSet<>();
-        setLabel.add(label);
-
-        Issue issue = new Issue(777L, "testTitle", "desc Test", setLabel);
         List<Issue> issueList = new ArrayList<>();
         issueList.add(issue);
-        IssueDTO issueDTO = new IssueDTO(777L, "testTitle", "desc Test", setLabel);
         List<IssueDTO> issueDTOList = new ArrayList<>();
         issueDTOList.add(issueDTO);
         Mockito.when(issueService.getAllIssues()).thenReturn(issueList);
