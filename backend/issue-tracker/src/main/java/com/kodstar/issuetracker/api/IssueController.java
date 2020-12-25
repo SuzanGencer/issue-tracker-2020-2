@@ -34,14 +34,6 @@ public class IssueController {
 
     //Internal server error handled
 
-    @GetMapping("/issues")
-    public ResponseEntity<List<Issue>> getAllIssues() {
-        List<Issue> allIssues;
-        allIssues = issueService.getAllIssues();
-        return new ResponseEntity<>(allIssues, HttpStatus.OK);
-    }
-
-
     @PostMapping("/issue")
 
     public ResponseEntity<IssueDTO> createIssue(@Valid @NonNull @RequestBody Issue issue) {
