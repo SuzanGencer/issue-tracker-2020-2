@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+
 import javax.validation.Valid;
 import java.util.*;
 
@@ -71,8 +73,9 @@ public class IssueController {
     }
 
     @PutMapping("issue/{issueId}")
-    public void editIssue(@PathVariable("issueId") Long issueId, @RequestBody Issue issue) {
-        issueService.editIssue(issueId, issue);
+    public ResponseEntity<IssueDTO> editIssue(@PathVariable("issueId") Long issueId, @RequestBody IssueDTO issue) {
+        Issue updatedIssue = issueService.editIssue(issueId, issue);
+        return new ResponseEntity(issueConverter.convert(updatedIssue),HttpStatus.OK);
     }
 
     @DeleteMapping("issue/{issueId}")
@@ -92,5 +95,17 @@ public class IssueController {
         });
         return errors;
     }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public String handleInvalidISsue(MethodArgumentTypeMismatchException e) {
+        return "invalid ID . " + e.getMessage();
+    }
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NoSuchElementException.class)
+    public String handleInvalidISsue(NoSuchElementException e) {
+        return "Issue not Found!There is no issue with this ID";
+    }
+
 
 }
