@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Set;
 
@@ -15,6 +16,7 @@ import java.util.Set;
 @Setter
 public class IssueDTO implements Serializable {
     private Long id;
+    @NotBlank(message = "Title must not be blank!")
     private String title;
     private String description;
     private Set<Label> labels;

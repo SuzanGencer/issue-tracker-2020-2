@@ -1,5 +1,6 @@
 package com.kodstar.issuetracker.service;
 
+import com.kodstar.issuetracker.dto.IssueDTO;
 import com.kodstar.issuetracker.entity.Issue;
 
 import java.util.List;
@@ -7,13 +8,13 @@ import java.util.List;
 
 public interface IssueService {
 
-    Issue createIssue(Issue issue);
+    IssueDTO createIssue(IssueDTO issue);
 
-    Issue findByTitle(String title);
-
-    void editIssue(Long issueId, Issue issue);
+    IssueDTO editIssue(Long issueId, IssueDTO issue);
 
     void deleteIssue(Long issueId);
  
-    List<Issue> getAllIssues();
+    List<IssueDTO> getAllIssues();
+
+    IssueDTO findById(Long issueId);
 }

@@ -16,4 +16,5 @@ public class IssueTrackerApplication {
     public ModelMapper modelMapper() {
         return new ModelMapper();
     }
+
 }
