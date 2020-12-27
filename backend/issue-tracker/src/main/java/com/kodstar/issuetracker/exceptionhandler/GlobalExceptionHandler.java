@@ -1,4 +1,4 @@
-package com.kodstar.issuetracker.api;
+package com.kodstar.issuetracker.exceptionhandler;
 
 
 import org.springframework.dao.DataIntegrityViolationException;
