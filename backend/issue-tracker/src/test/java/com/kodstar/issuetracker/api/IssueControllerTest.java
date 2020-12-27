@@ -71,7 +71,7 @@ class IssueControllerTest {
 
     @Test
     public void TestCreateIssueShouldReturnAJsonObject() throws Exception {
-        Mockito.when(issueService.createIssue(Mockito.any(Issue.class))).thenReturn(issue);
+        Mockito.when(issueService.createIssue(Mockito.any(IssueDTO.class))).thenReturn(issueDTO);
         Mockito.when(issueConverter.convert(Mockito.any(Issue.class))).thenReturn(issueDTO);
         mvc.perform(MockMvcRequestBuilders.post("/issue")
                 .content(asJsonString(issue))
@@ -120,8 +120,8 @@ class IssueControllerTest {
 
     @Test
     public void getAllIssuesShouldReturnAJsonObject() throws Exception {
-        List<Issue> issueList = new ArrayList<>();
-        issueList.add(issue);
+        List<IssueDTO> issueList = new ArrayList<>();
+        issueList.add(issueDTO);
         List<IssueDTO> issueDTOList = new ArrayList<>();
         issueDTOList.add(issueDTO);
         Mockito.when(issueService.getAllIssues()).thenReturn(issueList);

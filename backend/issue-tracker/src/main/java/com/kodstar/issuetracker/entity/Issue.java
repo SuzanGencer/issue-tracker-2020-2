@@ -33,12 +33,11 @@ public class Issue implements Serializable {
     private String title;
 
     @Column(name = "issue_description", columnDefinition = "varchar(1500)")
-
     private String description;
 
     @Column(name = "issue_status")
     @Enumerated(EnumType.STRING)
-    private IssueStatus issueStatus = IssueStatus.ACTIVE;
+    private IssueStatus issueStatus = IssueStatus.ACTIVE;//default
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(name = "t_issue_label", joinColumns = @JoinColumn(name = "issue_id"), inverseJoinColumns = @JoinColumn(name = "label_id"))
