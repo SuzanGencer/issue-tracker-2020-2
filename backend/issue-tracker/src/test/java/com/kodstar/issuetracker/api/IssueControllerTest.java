@@ -2,12 +2,13 @@ package com.kodstar.issuetracker.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kodstar.issuetracker.dto.IssueDTO;
+import com.kodstar.issuetracker.dto.LabelDTO;
 import com.kodstar.issuetracker.entity.Issue;
-import com.kodstar.issuetracker.entity.IssueStatus;
 import com.kodstar.issuetracker.entity.Label;
 import com.kodstar.issuetracker.service.IssueService;
 import com.kodstar.issuetracker.service.LabelService;
-import com.kodstar.issuetracker.utils.IssueConverter;
+import com.kodstar.issuetracker.utils.impl.FromIssueToIssueDTO;
+import com.kodstar.issuetracker.utils.impl.FromLabelToLabelDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -20,8 +21,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import javax.validation.ConstraintViolationException;
 
 import static org.hamcrest.Matchers.*;
 
@@ -44,14 +43,16 @@ class IssueControllerTest {
     @MockBean
     LabelService labelService;
     @MockBean
-    IssueConverter issueConverter;
+    FromIssueToIssueDTO issueConverter;
+    @MockBean
+    FromLabelToLabelDTO fromLabelToLabelDTO;
     private Issue issue;
     ObjectMapper objectMapper = new ObjectMapper();
     private IssueDTO issueDTO;
 
     @BeforeEach
     void setUp() {
-        Label label = new Label(45L, "testLabel");
+        Label label = new Label(450L, "testLabel");
         Set<Label> labels = new HashSet<>();
         labels.add(label);
         issue = new Issue();
@@ -59,7 +60,11 @@ class IssueControllerTest {
         issue.setTitle("Test");
         issue.setDescription("Test text");
         issue.setLabels(labels);
-        issueDTO = new IssueDTO(777L, "testTitle", "desc Test", labels);
+
+        LabelDTO labelDTO = new LabelDTO(45L, "testLabelDTO");
+        Set<LabelDTO> labelDTOSet = new HashSet<>();
+        labelDTOSet.add(labelDTO);
+        issueDTO = new IssueDTO(777L, "testTitle", "desc Test", labelDTOSet);
     }
 
     public static String asJsonString(final Object obj) {
@@ -87,18 +92,23 @@ class IssueControllerTest {
 
     @Test
     public void TestGetAllLabelsShouldReturnAJsonObject() throws Exception {
-        Label label1 = new Label(45L, "testLabel1");
-        Label label2 = new Label(55L, "testLabel2");
-        Label label3 = new Label(65L, "testLabel3");
-        Set<Label> setLabel = new HashSet<>();
-        setLabel.add(label1);
-        setLabel.add(label2);
-        setLabel.add(label3);
+        LabelDTO label1 = new LabelDTO(45L, "testLabel1");
+        LabelDTO label2 = new LabelDTO(55L, "testLabel2");
+        LabelDTO label3 = new LabelDTO(65L, "testLabel3");
+
+        Set<LabelDTO> labelDTOSet = new HashSet<>();
+
+        labelDTOSet.add(label1);
+        labelDTOSet.add(label2);
+        labelDTOSet.add(label3);
+
+        Mockito.when(labelService.getAllLabels()).thenReturn(labelDTOSet);
+
         mvc.perform(MockMvcRequestBuilders.get("/issues/labels")
-                .content(asJsonString(setLabel))
+                .content(asJsonString(labelDTOSet))
                 .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json"));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
     @Test

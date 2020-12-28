@@ -19,12 +19,12 @@ import java.util.*;
 public class IssueController {
 
     private final IssueService issueService;
-    private final LabelService labelService;
+
 
     @Autowired
-    public IssueController(IssueService issueService, LabelService labelService) {
+    public IssueController(IssueService issueService) {
         this.issueService = issueService;
-        this.labelService = labelService;
+
     }
 
     @GetMapping("/issues")
@@ -37,10 +37,6 @@ public class IssueController {
         return new ResponseEntity(issueService.findById(issueId), HttpStatus.OK);
     }
 
-    @GetMapping("issues/labels")
-    public ResponseEntity<Set<Label>> getAllLabels() {
-        return new ResponseEntity(labelService.getAllLabels(), HttpStatus.OK);
-    }
 
     @PostMapping("/issue")
     public ResponseEntity<IssueDTO> createIssue(@Valid @NonNull @RequestBody IssueDTO issue) {
