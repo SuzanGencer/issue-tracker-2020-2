@@ -43,7 +43,8 @@ public class LabelServiceImpl implements LabelService {
     @Override
     public Set<LabelDTO> getAllLabels() {
         Set<LabelDTO> labelDTOSet = new HashSet<>();
-        for (LabelDTO labelDTO : fromLabelToLabelDTO.convertAll((List<Label>) labelRepository.findAll())) {
+        for (LabelDTO labelDTO :
+                fromLabelToLabelDTO.convertAll((List<Label>) labelRepository.findAll())) {
             labelDTOSet.add(labelDTO);
         }
         return labelDTOSet;
