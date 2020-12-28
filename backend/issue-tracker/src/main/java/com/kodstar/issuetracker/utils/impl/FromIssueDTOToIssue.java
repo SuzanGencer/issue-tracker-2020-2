@@ -25,7 +25,7 @@ public class FromIssueDTOToIssue implements Converter<IssueDTO, Issue> {
     public Issue convert(IssueDTO issueDTO) {
         Issue issue = modelMapper.map(issueDTO, Issue.class);
         Set<Label> newLabels= new HashSet<>();
-        for (LabelDTO labelDto:issueDTO.getLabelDTOSet()) {
+        for (LabelDTO labelDto:issueDTO.getLabels()) {
             Label label = fromLabelDTOToLabel.convert(labelDto);
             newLabels.add(label);
         }

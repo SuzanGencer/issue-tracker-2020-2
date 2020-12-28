@@ -50,10 +50,7 @@ public class LabelServiceImpl implements LabelService {
         return labelDTOSet;
     }
 
-    @Override
-    public void deleteLabel(Long labelId) {
-        labelRepository.deleteById(labelId);
-    }
+
 
 
 }

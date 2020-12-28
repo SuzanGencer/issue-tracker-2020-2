@@ -30,7 +30,7 @@ public class FromIssueToIssueDTO implements Converter<Issue, IssueDTO> {
             LabelDTO labelDTO = fromLabelToLabelDTO.convert(label);
             newLabelDTOs.add(labelDTO);
         }
-        issueDTO.setLabelDTOSet(newLabelDTOs);
+        issueDTO.setLabels(newLabelDTOs);
         return issueDTO;
     }
 

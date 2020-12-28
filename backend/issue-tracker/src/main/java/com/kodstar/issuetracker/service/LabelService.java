@@ -10,6 +10,6 @@ public interface LabelService {
 
     LabelDTO createLabel(LabelDTO labelDTO);
     Set<LabelDTO> getAllLabels();
-    void deleteLabel(Long labelId);
+
 
 }

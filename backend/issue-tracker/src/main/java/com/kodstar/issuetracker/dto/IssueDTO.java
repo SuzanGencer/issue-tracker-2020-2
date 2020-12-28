@@ -21,6 +21,6 @@ public class IssueDTO implements Serializable {
     @NotBlank(message = "Title must not be blank!")
     private String title;
     private String description;
-    private Set<LabelDTO> labelDTOSet;
+    private Set<LabelDTO> labels;
 
 }
