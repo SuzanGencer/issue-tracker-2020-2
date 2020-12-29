@@ -3,6 +3,7 @@ package com.kodstar.issuetracker.api;
 import com.kodstar.issuetracker.dto.IssueDTO;
 import com.kodstar.issuetracker.service.IssueService;
 import com.kodstar.issuetracker.service.LabelsOfIssueService;
+import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -58,6 +59,12 @@ public class IssueController {
     public ResponseEntity<IssueDTO> removeLabelFromIssue(@PathVariable Long labelId, @PathVariable Long issueId) {
         return new ResponseEntity(labelsOfIssueService.removeLabelFromIssue(labelId, issueId), HttpStatus.OK);
     }
+
+    @GetMapping("issues/search/{keyword}")
+    public ResponseEntity<List<IssueDTO>> getAllIssuesByKeyword(@PathVariable String keyword) {
+        return new ResponseEntity(issueService.findALlByKeyword(keyword), HttpStatus.OK);
+    }
+
 
 
 }
