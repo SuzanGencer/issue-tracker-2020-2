@@ -1,6 +1,7 @@
 package com.kodstar.issuetracker.api;
 
 
+import com.kodstar.issuetracker.dto.IssueDTO;
 import com.kodstar.issuetracker.dto.LabelDTO;
 import com.kodstar.issuetracker.entity.Label;
 import com.kodstar.issuetracker.service.LabelService;
@@ -33,6 +34,16 @@ public class LabelController {
     @PostMapping("label")
     public ResponseEntity<LabelDTO> createLabel(@Valid @NonNull @RequestBody LabelDTO labelDTO) {
         return new ResponseEntity(labelService.createLabel(labelDTO), HttpStatus.CREATED);
+    }
+
+    @PutMapping("label/{labelId}")
+    public ResponseEntity<LabelDTO> editLabel(@PathVariable("labelId") Long labelId, @RequestBody LabelDTO labelDTO) {
+        return new ResponseEntity(labelService.editLabel(labelId, labelDTO), HttpStatus.OK);
+    }
+
+    @DeleteMapping("label/{labelId}")
+    public void deleteLabel(@PathVariable Long labelId) {
+        labelService.deleteLabel(labelId);
     }
 
 

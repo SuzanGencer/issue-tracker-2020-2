@@ -3,6 +3,7 @@ package com.kodstar.issuetracker.api;
 import com.kodstar.issuetracker.dto.IssueDTO;
 import com.kodstar.issuetracker.service.IssueService;
 import com.kodstar.issuetracker.service.LabelsOfIssueService;
+import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -57,6 +58,16 @@ public class IssueController {
     @PutMapping("issue/{issueId}/{labelId}")
     public ResponseEntity<IssueDTO> removeLabelFromIssue(@PathVariable Long labelId, @PathVariable Long issueId) {
         return new ResponseEntity(labelsOfIssueService.removeLabelFromIssue(labelId, issueId), HttpStatus.OK);
+    }
+
+    @GetMapping("issues/search/title/{keyword}")
+    public ResponseEntity<List<IssueDTO>> getAllIssuesByTitleKeyword(@PathVariable String keyword) {
+        return new ResponseEntity(issueService.findALlByTitleKeyword(keyword), HttpStatus.OK);
+    }
+
+    @GetMapping("issues/search/description/{keyword}")
+    public ResponseEntity<List<IssueDTO>> getAllIssuesByDescKeyword(@PathVariable String keyword) {
+        return new ResponseEntity(issueService.findALlByDescKeyword(keyword), HttpStatus.OK);
     }
 
 

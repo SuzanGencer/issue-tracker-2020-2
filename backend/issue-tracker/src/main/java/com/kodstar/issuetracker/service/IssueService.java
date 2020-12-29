@@ -2,6 +2,7 @@ package com.kodstar.issuetracker.service;
 
 import com.kodstar.issuetracker.dto.IssueDTO;
 import com.kodstar.issuetracker.entity.Issue;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -17,5 +18,9 @@ public interface IssueService {
     List<IssueDTO> getAllIssues();
 
     IssueDTO findById(Long issueId);
+
+    List<IssueDTO> findALlByTitleKeyword(String keyword);
+
+    List<IssueDTO> findALlByDescKeyword(String keyword);
 
 }
