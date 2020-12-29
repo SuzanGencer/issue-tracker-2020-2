@@ -54,6 +54,11 @@ public class IssueController {
         issueService.deleteIssue(issueId);
     }
 
+    @DeleteMapping("/issues/{selectedIssueIds}")
+    public void deleteSelectedIssues(@PathVariable List<Long> selectedIssueIds){
+        issueService.deleteSelectedIssues(selectedIssueIds);
+    }
+
 
     @PutMapping("issue/{issueId}/{labelId}")
     public ResponseEntity<IssueDTO> removeLabelFromIssue(@PathVariable Long labelId, @PathVariable Long issueId) {

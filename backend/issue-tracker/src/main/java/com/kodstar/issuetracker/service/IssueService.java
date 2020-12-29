@@ -19,6 +19,9 @@ public interface IssueService {
 
     IssueDTO findById(Long issueId);
 
+
+    void deleteSelectedIssues(List<Long> selectedIssueIds);
+
     List<IssueDTO> findALlByTitleKeyword(String keyword);
 
     List<IssueDTO> findALlByDescKeyword(String keyword);
