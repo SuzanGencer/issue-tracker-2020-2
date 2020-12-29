@@ -32,7 +32,7 @@ public class LabelsOfIssueServiceImpl implements LabelsOfIssueService {
     }
 
     @Override
-   @Transactional
+    @Transactional
     public IssueDTO removeLabelFromIssue(Long labelId, Long issueId) {
         Issue issue = issueRepository.findById(issueId)
                      .orElseThrow(NoSuchElementException::new);

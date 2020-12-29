@@ -1,6 +1,8 @@
 package com.kodstar.issuetracker.service.impl;
 
+import com.kodstar.issuetracker.dto.IssueDTO;
 import com.kodstar.issuetracker.dto.LabelDTO;
+import com.kodstar.issuetracker.entity.Issue;
 import com.kodstar.issuetracker.entity.Label;
 import com.kodstar.issuetracker.repo.LabelRepository;
 import com.kodstar.issuetracker.service.LabelService;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 
@@ -34,6 +37,11 @@ public class LabelServiceImpl implements LabelService {
     }
 
     @Override
+    public void deleteLabel(Long labelId) {
+        labelRepository.deleteById(labelId);
+    }
+
+    @Override
     public LabelDTO createLabel(LabelDTO labelDTO) {
         Label label = fromLabelDTOToLabel.convert(labelDTO);
         LabelDTO labelDto =  fromLabelToLabelDTO.convert(labelRepository.save(label));
@@ -50,7 +58,18 @@ public class LabelServiceImpl implements LabelService {
         return labelDTOSet;
     }
 
+    @Override
+    public LabelDTO editLabel(Long labelId, LabelDTO labelDTO) {
+        Label updatedLabel = labelRepository.findById(labelId)
+                .orElseThrow(NoSuchElementException::new);
 
+        modelMapper.getConfiguration().setSkipNullEnabled(true);
+        modelMapper.map(labelDTO,updatedLabel);
+
+        LabelDTO newLabelDTO = fromLabelToLabelDTO.convert(labelRepository.save(updatedLabel));
+
+        return newLabelDTO;
+    }
 
 
 }
