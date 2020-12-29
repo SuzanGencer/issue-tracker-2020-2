@@ -19,6 +19,8 @@ public interface IssueService {
 
     IssueDTO findById(Long issueId);
 
-    List<IssueDTO> findALlByKeyword(String keyword);
+    List<IssueDTO> findALlByTitleKeyword(String keyword);
+
+    List<IssueDTO> findALlByDescKeyword(String keyword);
 
 }

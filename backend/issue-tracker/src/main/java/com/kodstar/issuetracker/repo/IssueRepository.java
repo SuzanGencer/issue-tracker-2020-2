@@ -13,6 +13,9 @@ import java.util.List;
 public interface IssueRepository extends CrudRepository<Issue, Long> {
     List<Issue> findAll();
 
-    @Query(value="select * from t_issue i where i.issue_title like %:keyword%", nativeQuery=true)
-    List<Issue> findALlByKeyword(@Param("keyword") String keyword);
+    @Query(value="select * from t_issue i where i.issue_title like %:keyword% or i.issue_description like %:keyword%", nativeQuery=true)
+    List<Issue> findALlByTitleKeyword(@Param("keyword") String keyword);
+
+    @Query(value="select * from t_issue i where  i.issue_description like %:keyword%", nativeQuery=true)
+    List<Issue> findALlByDescKeyword(@Param("keyword") String keyword);
 }

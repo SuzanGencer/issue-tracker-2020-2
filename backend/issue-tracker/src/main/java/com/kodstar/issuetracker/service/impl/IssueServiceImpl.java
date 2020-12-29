@@ -56,8 +56,14 @@ public class IssueServiceImpl implements IssueService {
     }
 
     @Override
-    public List<IssueDTO> findALlByKeyword(String keyword) {
-        List<IssueDTO> issueDTOList = fromIssueToIssueDTO.convertAll(issueRepository.findALlByKeyword(keyword));
+    public List<IssueDTO> findALlByTitleKeyword(String keyword) {
+        List<IssueDTO> issueDTOList = fromIssueToIssueDTO.convertAll(issueRepository.findALlByTitleKeyword(keyword));
+        return issueDTOList;
+    }
+
+    @Override
+    public List<IssueDTO> findALlByDescKeyword(String keyword) {
+        List<IssueDTO> issueDTOList = fromIssueToIssueDTO.convertAll(issueRepository.findALlByDescKeyword(keyword));
         return issueDTOList;
     }
 

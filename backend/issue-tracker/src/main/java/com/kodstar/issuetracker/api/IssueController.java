@@ -60,11 +60,15 @@ public class IssueController {
         return new ResponseEntity(labelsOfIssueService.removeLabelFromIssue(labelId, issueId), HttpStatus.OK);
     }
 
-    @GetMapping("issues/search/{keyword}")
-    public ResponseEntity<List<IssueDTO>> getAllIssuesByKeyword(@PathVariable String keyword) {
-        return new ResponseEntity(issueService.findALlByKeyword(keyword), HttpStatus.OK);
+    @GetMapping("issues/search/title/{keyword}")
+    public ResponseEntity<List<IssueDTO>> getAllIssuesByTitleKeyword(@PathVariable String keyword) {
+        return new ResponseEntity(issueService.findALlByTitleKeyword(keyword), HttpStatus.OK);
     }
 
+    @GetMapping("issues/search/description/{keyword}")
+    public ResponseEntity<List<IssueDTO>> getAllIssuesByDescKeyword(@PathVariable String keyword) {
+        return new ResponseEntity(issueService.findALlByDescKeyword(keyword), HttpStatus.OK);
+    }
 
 
 }
