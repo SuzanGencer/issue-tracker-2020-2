@@ -57,5 +57,10 @@ public class IssueController {
         issueService.deleteIssue(issueId);
     }
 
+    @DeleteMapping("/issues/{selectedIssueIds}")
+    @ResponseBody
+    public void deleteSelectedIssues(@PathVariable List<Long> selectedIssueIds){
+        issueService.deleteSelectedIssues(selectedIssueIds);}
+
 
 }

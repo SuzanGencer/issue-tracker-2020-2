@@ -17,4 +17,6 @@ public interface IssueService {
     List<IssueDTO> getAllIssues();
 
     IssueDTO findById(Long issueId);
+
+    void deleteSelectedIssues(List<Long> selectedIssueIds);
 }
