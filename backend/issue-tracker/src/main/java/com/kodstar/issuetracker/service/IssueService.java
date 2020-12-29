@@ -17,4 +17,5 @@ public interface IssueService {
     List<IssueDTO> getAllIssues();
 
     IssueDTO findById(Long issueId);
+
 }

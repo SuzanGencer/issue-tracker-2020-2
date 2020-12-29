@@ -1,6 +1,6 @@
 package com.kodstar.issuetracker.service;
 
-import com.kodstar.issuetracker.entity.Label;
+import com.kodstar.issuetracker.dto.LabelDTO;
 
 
 import java.util.Set;
@@ -8,6 +8,8 @@ import java.util.Set;
 
 public interface LabelService {
 
-    Set<Label> getAllLabels();
+    LabelDTO createLabel(LabelDTO labelDTO);
+    Set<LabelDTO> getAllLabels();
+
 
 }
