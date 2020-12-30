@@ -1,6 +1,8 @@
 package com.kodstar.issuetracker.service;
 
+import com.kodstar.issuetracker.dto.CommentDTO;
 import com.kodstar.issuetracker.dto.IssueDTO;
+import com.kodstar.issuetracker.entity.Comment;
 import com.kodstar.issuetracker.entity.Issue;
 import org.springframework.data.repository.query.Param;
 
@@ -25,5 +27,7 @@ public interface IssueService {
     List<IssueDTO> findALlByTitleKeyword(String keyword);
 
     List<IssueDTO> findALlByDescKeyword(String keyword);
+
+    IssueDTO addComment(Long issueId, CommentDTO commentDTO);
 
 }

@@ -1,6 +1,9 @@
 package com.kodstar.issuetracker.api;
 
+import com.kodstar.issuetracker.dto.CommentDTO;
 import com.kodstar.issuetracker.dto.IssueDTO;
+import com.kodstar.issuetracker.entity.Comment;
+import com.kodstar.issuetracker.entity.Issue;
 import com.kodstar.issuetracker.service.IssueService;
 import com.kodstar.issuetracker.service.LabelsOfIssueService;
 import org.springframework.data.repository.query.Param;
@@ -55,10 +58,9 @@ public class IssueController {
     }
 
     @DeleteMapping("/issues/{selectedIssueIds}")
-    public void deleteSelectedIssues(@PathVariable List<Long> selectedIssueIds){
+    public void deleteSelectedIssues(@PathVariable List<Long> selectedIssueIds) {
         issueService.deleteSelectedIssues(selectedIssueIds);
     }
-
 
     @PutMapping("issue/{issueId}/{labelId}")
     public ResponseEntity<IssueDTO> removeLabelFromIssue(@PathVariable Long labelId, @PathVariable Long issueId) {
@@ -73,6 +75,12 @@ public class IssueController {
     @GetMapping("issues/search/description/{keyword}")
     public ResponseEntity<List<IssueDTO>> getAllIssuesByDescKeyword(@PathVariable String keyword) {
         return new ResponseEntity(issueService.findALlByDescKeyword(keyword), HttpStatus.OK);
+    }
+
+    @PostMapping("issue/{issueId}/comment")
+    public ResponseEntity<IssueDTO> addComment(@RequestBody CommentDTO commentDTO, @PathVariable Long issueId) {
+        System.out.println(commentDTO);
+        return new ResponseEntity(issueService.addComment(issueId, commentDTO), HttpStatus.OK);
     }
 
 
