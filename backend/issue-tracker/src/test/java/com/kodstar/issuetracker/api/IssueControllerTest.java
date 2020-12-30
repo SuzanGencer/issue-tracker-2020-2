@@ -63,7 +63,7 @@ class IssueControllerTest {
         LabelDTO labelDTO = new LabelDTO(45L, "testLabelDTO");
         Set<LabelDTO> labelDTOSet = new HashSet<>();
         labelDTOSet.add(labelDTO);
-        issueDTO = new IssueDTO(777L, "testTitle", "desc Test", labelDTOSet);
+        issueDTO = new IssueDTO(777L, "testTitle", "desc Test", labelDTOSet,new ArrayList<>());
     }
 
     public static String asJsonString(final Object obj) {
