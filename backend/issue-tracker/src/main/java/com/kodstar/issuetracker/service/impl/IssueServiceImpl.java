@@ -68,12 +68,18 @@ public class IssueServiceImpl implements IssueService {
     }
 
     @Override
+    public List<IssueDTO> findALlIssuesByLabel(Long labelId) {
+        List<IssueDTO> issueDTOList = fromIssueToIssueDTO.convertAll(issueRepository.findALlIssuesByLabel(labelId));
+        return issueDTOList;
+    }
+
+    @Override
     public IssueDTO editIssue(Long issueId, IssueDTO issue) {
         Issue updatedIssue = issueRepository.findById(issueId)
                 .orElseThrow(NoSuchElementException::new);
 
         modelMapper.getConfiguration().setSkipNullEnabled(true);
-        modelMapper.map(issue,updatedIssue);
+        modelMapper.map(issue, updatedIssue);
 
         IssueDTO issueDTO = fromIssueToIssueDTO.convert(issueRepository.save(updatedIssue));
 

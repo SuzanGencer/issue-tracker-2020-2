@@ -14,7 +14,7 @@ public interface IssueService {
     IssueDTO editIssue(Long issueId, IssueDTO issue);
 
     void deleteIssue(Long issueId);
- 
+
     List<IssueDTO> getAllIssues();
 
     IssueDTO findById(Long issueId);
@@ -22,5 +22,7 @@ public interface IssueService {
     List<IssueDTO> findALlByTitleKeyword(String keyword);
 
     List<IssueDTO> findALlByDescKeyword(String keyword);
+
+    List<IssueDTO> findALlIssuesByLabel(Long labelId);
 
 }

@@ -47,8 +47,5 @@ public class Issue implements Serializable {
 
 
 
-    public void removeLabel(Label label) {
-        this.labels.remove(label);
-    }
 
 }

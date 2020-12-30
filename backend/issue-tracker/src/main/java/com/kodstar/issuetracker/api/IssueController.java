@@ -70,5 +70,9 @@ public class IssueController {
         return new ResponseEntity(issueService.findALlByDescKeyword(keyword), HttpStatus.OK);
     }
 
+    @GetMapping("issues/search/label/{labelId}")
+    public ResponseEntity<List<IssueDTO>> getAllIssuesByDescKeyword(@PathVariable Long labelId) {
+        return new ResponseEntity(issueService.findALlIssuesByLabel(labelId), HttpStatus.OK);
+    }
 
 }
