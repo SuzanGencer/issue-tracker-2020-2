@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -29,6 +30,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
@@ -136,5 +138,43 @@ class IssueControllerTest {
                 .andExpect(jsonPath("$[0].title", is(issueDTOList.get(0).getTitle())))
                 .andExpect(jsonPath("$[0].id", is(777)))
                 .andExpect(jsonPath("$[0].description", is(issueDTOList.get(0).getDescription())));
+    }
+
+    @Test
+    public void deleteAnIssueShouldReturnIsOk() throws Exception {
+        doNothing().when(issueService).deleteIssue(777L);
+        mvc.perform(MockMvcRequestBuilders.delete("/issue/777")
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void deleteMultipleIssuesShouldReturnAJsonObject() throws Exception {
+        List<Long> longList = new ArrayList<>();
+        longList.add(777L);
+        longList.add(888L);
+        doNothing().when(issueService).deleteSelectedIssues(longList);
+        mvc.perform(MockMvcRequestBuilders.delete("/issues/777,888")
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void deleteAnIssueShouldReturnNotFoundException() throws Exception {
+        doThrow(EmptyResultDataAccessException.class).when(issueService).deleteIssue(777L);
+        mvc.perform(MockMvcRequestBuilders.delete("/issue/777")
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void deleteMultipleIssuesShouldReturnNotFound() throws Exception {
+        List<Long> longList = new ArrayList<>();
+        longList.add(777L);
+        longList.add(888L);
+        doThrow(EmptyResultDataAccessException.class).when(issueService).deleteSelectedIssues(longList);
+        mvc.perform(MockMvcRequestBuilders.delete("/issues/777,888")
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 }
