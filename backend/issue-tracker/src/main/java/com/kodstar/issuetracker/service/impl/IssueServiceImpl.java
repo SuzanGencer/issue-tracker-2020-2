@@ -88,27 +88,7 @@ public class IssueServiceImpl implements IssueService {
         return issueDTOList;
     }
 
-   /* @Override
-    public Page<IssueDTO> findAllPaginaton(Integer page, Integer size) {
-        Pageable pageable = PageRequest.of(page, size);
 
-        Page<Issue> issues = issueRepository.findALl(pageable);
-        Page<IssueDTO> dtoPage = issues.map(new Converter<Issue, IssueDTO>() {
-
-            @Override
-            public IssueDTO convert(Issue issue) {
-                IssueDTO issueDTO = modelMapper.map(issue, IssueDTO.class);
-                Set<LabelDTO> newLabelDTOs= new HashSet<>();
-                for (Label label:issue.getLabels()) {
-                    LabelDTO labelDTO = fromLabelToLabelDTO.convert(label);
-                    newLabelDTOs.add(labelDTO);
-                }
-                issueDTO.setLabels(newLabelDTOs);
-                return issueDTO;
-            }
-        });
-        return dtoPage;
-    }*/
 
 
     @Override

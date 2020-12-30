@@ -32,7 +32,6 @@ public interface IssueService {
 
     List<IssueDTO> findALlIssuesByLabel(Long labelId);
 
-    //Page<IssueDTO> findAllPaginaton(Pageable pageable);
 
     List<IssueDTO> findALlIssuesSortedByUpdateTime();
 

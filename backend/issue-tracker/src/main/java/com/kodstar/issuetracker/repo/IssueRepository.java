@@ -25,10 +25,5 @@ public interface IssueRepository extends CrudRepository<Issue, Long> {
     @Query(value = "select * from t_issue i inner JOIN t_issue_label il ON i.id=il.issue_id where il.label_id= :labelId", nativeQuery = true)
     List<Issue> findALlIssuesByLabel(@Param("labelId") Long labelId);
 
-    @Query(value = "select * FROM t_issue ORDER BY updateDateTime ASC", nativeQuery = true)
-    List<Issue> findAllOrderByUpdateDateTimeChronology();
-
-    //Page<Issue> findALl(Pageable pageable);
-
     List<Issue> findAll(Sort sort);
 }
