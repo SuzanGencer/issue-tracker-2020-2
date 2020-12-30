@@ -3,6 +3,7 @@ package com.kodstar.issuetracker.api;
 import com.kodstar.issuetracker.dto.IssueDTO;
 import com.kodstar.issuetracker.service.IssueService;
 import com.kodstar.issuetracker.service.LabelsOfIssueService;
+import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +79,11 @@ public class IssueController {
     @GetMapping("issues/search/label/{labelId}")
     public ResponseEntity<List<IssueDTO>> getAllIssuesByDescKeyword(@PathVariable Long labelId) {
         return new ResponseEntity(issueService.findALlIssuesByLabel(labelId), HttpStatus.OK);
+    }
+
+    @GetMapping("issues/sort/updateTime")
+    public ResponseEntity<List<IssueDTO>> ALlIssuesSortedByUpdateTime() {
+        return new ResponseEntity(issueService.findALlIssuesSortedByUpdateTime(), HttpStatus.OK);
     }
 
 }

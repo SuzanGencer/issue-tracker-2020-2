@@ -2,7 +2,11 @@ package com.kodstar.issuetracker.service;
 
 import com.kodstar.issuetracker.dto.IssueDTO;
 import com.kodstar.issuetracker.entity.Issue;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.Param;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -27,5 +31,10 @@ public interface IssueService {
     List<IssueDTO> findALlByDescKeyword(String keyword);
 
     List<IssueDTO> findALlIssuesByLabel(Long labelId);
+
+    //Page<IssueDTO> findAllPaginaton(Pageable pageable);
+
+    List<IssueDTO> findALlIssuesSortedByUpdateTime();
+
 
 }

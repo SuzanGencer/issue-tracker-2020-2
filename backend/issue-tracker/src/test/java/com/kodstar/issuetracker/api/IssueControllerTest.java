@@ -23,6 +23,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+
 import static org.hamcrest.Matchers.*;
 
 import java.util.ArrayList;
@@ -51,6 +52,7 @@ class IssueControllerTest {
     private Issue issue;
     ObjectMapper objectMapper = new ObjectMapper();
     private IssueDTO issueDTO;
+
 
     @BeforeEach
     void setUp() {
@@ -177,4 +179,6 @@ class IssueControllerTest {
                 .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
+
+
 }
