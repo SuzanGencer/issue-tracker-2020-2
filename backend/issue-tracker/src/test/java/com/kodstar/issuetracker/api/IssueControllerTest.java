@@ -161,6 +161,7 @@ class IssueControllerTest {
                 .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
+
     @Test
     public void deleteMultipleIssuesShouldReturnNotFound() throws Exception {
         List<Long> longList = new ArrayList<>();

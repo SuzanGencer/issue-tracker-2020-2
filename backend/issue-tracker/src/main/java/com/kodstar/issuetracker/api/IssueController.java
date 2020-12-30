@@ -77,6 +77,11 @@ public class IssueController {
         return new ResponseEntity(issueService.findALlByDescKeyword(keyword), HttpStatus.OK);
     }
 
+    @GetMapping("issues/search/label/{labelId}")
+    public ResponseEntity<List<IssueDTO>> getAllIssuesByLabelId(@PathVariable Long labelId) {
+        return new ResponseEntity(issueService.findALlIssuesByLabel(labelId), HttpStatus.OK);
+    }
+  
     @PostMapping("issue/{issueId}/comment")
     public ResponseEntity<IssueDTO> addComment(@RequestBody CommentDTO commentDTO, @PathVariable Long issueId) {
         System.out.println(commentDTO);

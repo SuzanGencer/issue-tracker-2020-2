@@ -54,8 +54,5 @@ public class Issue implements Serializable {
     private List<Comment> comments;
 
 
-    public void removeLabel(Label label) {
-        this.labels.remove(label);
-    }
 
 }

@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -76,7 +77,13 @@ public class IssueServiceImpl implements IssueService {
     }
 
     @Override
+    public List<IssueDTO> findALlIssuesByLabel(Long labelId) {
+        List<IssueDTO> issueDTOList = fromIssueToIssueDTO.convertAll(issueRepository.findALlIssuesByLabel(labelId));
+        return issueDTOList; 
+    }
+  
     @Transactional
+    @Override
     public IssueDTO addComment(Long issueId, CommentDTO commentDTO) {
         Issue issue = issueRepository.findById(issueId)
                 .orElseThrow(NoSuchElementException::new);
