@@ -1,15 +1,19 @@
 package com.kodstar.issuetracker.service.impl;
 
+import com.kodstar.issuetracker.dto.CommentDTO;
 import com.kodstar.issuetracker.dto.IssueDTO;
+import com.kodstar.issuetracker.entity.Comment;
 import com.kodstar.issuetracker.entity.Issue;
 import com.kodstar.issuetracker.repo.IssueRepository;
+import com.kodstar.issuetracker.service.CommentService;
 import com.kodstar.issuetracker.service.IssueService;
+import com.kodstar.issuetracker.utils.impl.FromCommentDTOToComment;
 import com.kodstar.issuetracker.utils.impl.FromIssueToIssueDTO;
 import com.kodstar.issuetracker.utils.impl.FromIssueDTOToIssue;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,20 +28,24 @@ public class IssueServiceImpl implements IssueService {
     private final ModelMapper modelMapper;
     private final FromIssueToIssueDTO fromIssueToIssueDTO;
     private final FromIssueDTOToIssue fromIssueDTOToIssue;
+    private final CommentService commentService;
+    private final FromCommentDTOToComment fromCommentDTOtoComment;
 
 
     @Autowired
-    public IssueServiceImpl(IssueRepository issueRepository, ModelMapper modelMapper, FromIssueToIssueDTO fromIssueToIssueDTO, FromIssueDTOToIssue fromIssueDTOToIssue) {
+    public IssueServiceImpl(IssueRepository issueRepository, ModelMapper modelMapper, FromIssueToIssueDTO fromIssueToIssueDTO, FromIssueDTOToIssue fromIssueDTOToIssue, CommentService commentService, FromCommentDTOToComment fromCommentDTOtoComment) {
         this.issueRepository = issueRepository;
         this.modelMapper = modelMapper;
         this.fromIssueToIssueDTO = fromIssueToIssueDTO;
         this.fromIssueDTOToIssue = fromIssueDTOToIssue;
+        this.commentService = commentService;
+        this.fromCommentDTOtoComment = fromCommentDTOtoComment;
     }
 
     @Override
     public IssueDTO createIssue(IssueDTO idt) {
         Issue issue = fromIssueDTOToIssue.convert(idt);
-        IssueDTO issueDto =  fromIssueToIssueDTO.convert(issueRepository.save(issue));
+        IssueDTO issueDto = fromIssueToIssueDTO.convert(issueRepository.save(issue));
         return issueDto;
     }
 
@@ -71,7 +79,17 @@ public class IssueServiceImpl implements IssueService {
     @Override
     public List<IssueDTO> findALlIssuesByLabel(Long labelId) {
         List<IssueDTO> issueDTOList = fromIssueToIssueDTO.convertAll(issueRepository.findALlIssuesByLabel(labelId));
-        return issueDTOList;
+        return issueDTOList; 
+    }
+  
+    @Transactional
+    @Override
+    public IssueDTO addComment(Long issueId, CommentDTO commentDTO) {
+        Issue issue = issueRepository.findById(issueId)
+                .orElseThrow(NoSuchElementException::new);
+        Comment addedComment = commentService.createComment(fromCommentDTOtoComment.convert(commentDTO));
+        issue.getComments().add(addedComment);
+        return fromIssueToIssueDTO.convert(issueRepository.save(issue));
     }
 
     @Override

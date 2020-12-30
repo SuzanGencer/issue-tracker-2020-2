@@ -10,7 +10,9 @@ import org.springframework.data.jpa.repository.Modifying;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -21,8 +23,6 @@ import java.util.Set;
 @SQLDelete(sql = "UPDATE t_issue SET issue_status = 'DELETED' WHERE id = ?")
 @Where(clause = "issue_status <> 'DELETED'") // '<>' meaning is NOT
 @Table(name = "t_issue")
-
-
 public class Issue implements Serializable {
 
 
@@ -45,6 +45,13 @@ public class Issue implements Serializable {
     @JoinTable(name = "t_issue_label", joinColumns = @JoinColumn(name = "issue_id"), inverseJoinColumns = @JoinColumn(name = "label_id"))
     private Set<Label> labels = new HashSet<>();
 
+    @OneToMany
+    @JoinTable(
+            name="IssueComments",
+            joinColumns = @JoinColumn( name="issue_id"),
+            inverseJoinColumns = @JoinColumn( name="comment_id")
+    )
+    private List<Comment> comments;
 
 
 

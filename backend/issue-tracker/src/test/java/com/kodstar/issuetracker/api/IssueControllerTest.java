@@ -25,10 +25,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.hamcrest.Matchers.*;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -66,7 +63,7 @@ class IssueControllerTest {
         LabelDTO labelDTO = new LabelDTO(45L, "testLabelDTO");
         Set<LabelDTO> labelDTOSet = new HashSet<>();
         labelDTOSet.add(labelDTO);
-        issueDTO = new IssueDTO(777L, "testTitle", "desc Test", labelDTOSet);
+        issueDTO = new IssueDTO(777L, "testTitle", "desc Test", labelDTOSet,new ArrayList<>());
     }
 
     public static String asJsonString(final Object obj) {
@@ -124,11 +121,9 @@ class IssueControllerTest {
 
     @Test
     public void getAllIssuesShouldReturnAJsonObject() throws Exception {
-        List<IssueDTO> issueList = new ArrayList<>();
-        issueList.add(issueDTO);
         List<IssueDTO> issueDTOList = new ArrayList<>();
         issueDTOList.add(issueDTO);
-        Mockito.when(issueService.getAllIssues()).thenReturn(issueList);
+        Mockito.when(issueService.getAllIssues()).thenReturn(issueDTOList);
         Mockito.when(issueConverter.convertAll(Mockito.any(List.class))).thenReturn(issueDTOList);
         mvc.perform(MockMvcRequestBuilders.get("/issues")
                 .content(asJsonString(issue))
