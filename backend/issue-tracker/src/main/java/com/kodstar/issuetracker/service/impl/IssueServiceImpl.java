@@ -86,6 +86,16 @@ public class IssueServiceImpl implements IssueService {
     }
 
     @Override
+    public List<IssueDTO> getAllIssuesOrderByCreateTime(boolean isAscending) {
+        if(isAscending){
+            return fromIssueToIssueDTO.convertAll(issueRepository.findAllByOrderByCreateTime());
+        }else{
+            return fromIssueToIssueDTO.convertAll(issueRepository.findAllByOrderByCreateTimeDesc());
+        }
+
+    }
+
+    @Override
     public IssueDTO editIssue(Long issueId, IssueDTO issue) {
         Issue updatedIssue = issueRepository.findById(issueId)
                 .orElseThrow(NoSuchElementException::new);

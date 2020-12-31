@@ -18,4 +18,8 @@ public interface IssueRepository extends CrudRepository<Issue, Long> {
 
     @Query(value="select * from t_issue i where  i.issue_description like %:keyword%", nativeQuery=true)
     List<Issue> findALlByDescKeyword(@Param("keyword") String keyword);
+
+    List<Issue> findAllByOrderByCreateTime();
+
+    List<Issue> findAllByOrderByCreateTimeDesc();
 }

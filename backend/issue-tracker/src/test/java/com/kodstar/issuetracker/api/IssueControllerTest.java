@@ -25,6 +25,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.hamcrest.Matchers.*;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.mockito.Mockito.*;
@@ -63,7 +64,7 @@ class IssueControllerTest {
         LabelDTO labelDTO = new LabelDTO(45L, "testLabelDTO");
         Set<LabelDTO> labelDTOSet = new HashSet<>();
         labelDTOSet.add(labelDTO);
-        issueDTO = new IssueDTO(777L, "testTitle", "desc Test", labelDTOSet,new ArrayList<>());
+        issueDTO = new IssueDTO(777L, "testTitle", "desc Test", labelDTOSet,new ArrayList<>(),LocalDateTime.now());
     }
 
     public static String asJsonString(final Object obj) {

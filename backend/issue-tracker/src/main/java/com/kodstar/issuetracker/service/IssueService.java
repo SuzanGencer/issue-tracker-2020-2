@@ -30,4 +30,8 @@ public interface IssueService {
 
     IssueDTO addComment(Long issueId, CommentDTO commentDTO);
 
+    List<IssueDTO> getAllIssuesOrderByCreateTime(boolean isAscending);
+
+
+
 }
