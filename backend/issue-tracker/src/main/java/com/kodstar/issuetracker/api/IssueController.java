@@ -84,8 +84,11 @@ public class IssueController {
   
     @PostMapping("issue/{issueId}/comment")
     public ResponseEntity<IssueDTO> addComment(@RequestBody CommentDTO commentDTO, @PathVariable Long issueId) {
-        System.out.println(commentDTO);
         return new ResponseEntity(issueService.addComment(issueId, commentDTO), HttpStatus.OK);
+    }
+    @DeleteMapping("issue/{issueId}/comment/{commentId}")
+    public void deleteComment(@PathVariable Long issueId, @PathVariable Long commentId) {
+        issueService.deleteComment( issueId, commentId);
     }
 
 

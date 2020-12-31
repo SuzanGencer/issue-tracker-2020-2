@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 
 @Service
@@ -90,6 +91,21 @@ public class IssueServiceImpl implements IssueService {
         Comment addedComment = commentService.createComment(fromCommentDTOtoComment.convert(commentDTO));
         issue.getComments().add(addedComment);
         return fromIssueToIssueDTO.convert(issueRepository.save(issue));
+    }
+
+    @Override
+    public void deleteComment(Long issueId,Long commentId) {
+        Issue issue = issueRepository.findById(issueId)
+                .orElseThrow(NoSuchElementException::new);
+        Optional<Comment> comment=issue.getComments().stream()
+                .filter(x->x.getId()==commentId)
+                .findFirst();
+        if(comment.isPresent()){
+            issue.getComments().remove(comment.get());
+        }else{
+            throw new NoSuchElementException();
+        }
+        issueRepository.save(issue);
     }
 
     @Override
