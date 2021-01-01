@@ -26,4 +26,5 @@ public class CommentServiceImpl implements CommentService {
     public Comment createComment(Comment comment) {
         return commentRepository.save(comment);
     }
+
 }

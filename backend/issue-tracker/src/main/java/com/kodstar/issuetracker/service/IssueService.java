@@ -32,4 +32,6 @@ public interface IssueService {
 
     IssueDTO addComment(Long issueId, CommentDTO commentDTO);
 
+    void deleteComment(Long issueId,Long commentId);
+
 }

@@ -46,6 +46,12 @@ public class GlobalExceptionHandler {
         return "Issue not Found!There is no issue with this ID.";
     }
 
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(IssueTrackerNotFoundException.class)
+    public String handleNotExistIssue(IssueTrackerNotFoundException e) {
+        return e.getMessage();
+    }
+
     //Http Status : 404 (Order not found)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(EmptyResultDataAccessException.class)

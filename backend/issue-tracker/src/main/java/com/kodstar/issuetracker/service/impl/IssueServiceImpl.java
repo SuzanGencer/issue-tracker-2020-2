@@ -4,6 +4,7 @@ import com.kodstar.issuetracker.dto.CommentDTO;
 import com.kodstar.issuetracker.dto.IssueDTO;
 import com.kodstar.issuetracker.entity.Comment;
 import com.kodstar.issuetracker.entity.Issue;
+import com.kodstar.issuetracker.exceptionhandler.IssueTrackerNotFoundException;
 import com.kodstar.issuetracker.repo.IssueRepository;
 import com.kodstar.issuetracker.service.CommentService;
 import com.kodstar.issuetracker.service.IssueService;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 
 @Service
@@ -90,6 +92,21 @@ public class IssueServiceImpl implements IssueService {
         Comment addedComment = commentService.createComment(fromCommentDTOtoComment.convert(commentDTO));
         issue.getComments().add(addedComment);
         return fromIssueToIssueDTO.convert(issueRepository.save(issue));
+    }
+
+    @Override
+    public void deleteComment(Long issueId,Long commentId) {
+        Issue issue = issueRepository.findById(issueId)
+                .orElseThrow(()->new IssueTrackerNotFoundException("Issue",issueId.toString()));
+        Optional<Comment> comment=issue.getComments().stream()
+                .filter(x->x.getId()==commentId)
+                .findFirst();
+        if(comment.isPresent()){
+            issue.getComments().remove(comment.get());
+        }else{
+            throw new IssueTrackerNotFoundException("Comment",commentId.toString());
+        }
+        issueRepository.save(issue);
     }
 
     @Override
