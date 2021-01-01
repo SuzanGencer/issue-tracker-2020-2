@@ -34,4 +34,8 @@ public interface IssueService {
 
     void deleteComment(Long issueId,Long commentId);
 
+    List<IssueDTO> getAllIssuesOrderByCreateTime(boolean isAscending);
+
+
+
 }

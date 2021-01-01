@@ -5,11 +5,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.data.jpa.repository.Modifying;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -23,6 +26,7 @@ import java.util.Set;
 @SQLDelete(sql = "UPDATE t_issue SET issue_status = 'DELETED' WHERE id = ?")
 @Where(clause = "issue_status <> 'DELETED'") // '<>' meaning is NOT
 @Table(name = "t_issue")
+@EntityListeners(AuditingEntityListener.class)
 public class Issue implements Serializable {
 
 
@@ -53,6 +57,9 @@ public class Issue implements Serializable {
     )
     private List<Comment> comments;
 
+    @CreatedDate
+    @Column(columnDefinition = "TIMESTAMP")
+    private LocalDateTime createTime;
 
 
 }

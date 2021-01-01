@@ -4,6 +4,7 @@ import com.kodstar.issuetracker.dto.CommentDTO;
 import com.kodstar.issuetracker.dto.IssueDTO;
 import com.kodstar.issuetracker.entity.Comment;
 import com.kodstar.issuetracker.entity.Issue;
+import com.kodstar.issuetracker.exceptionhandler.InvalidQueryParameterException;
 import com.kodstar.issuetracker.service.IssueService;
 import com.kodstar.issuetracker.service.LabelsOfIssueService;
 import org.springframework.data.repository.query.Param;
@@ -23,7 +24,9 @@ public class IssueController {
 
     private final IssueService issueService;
     private final LabelsOfIssueService labelsOfIssueService;
-
+    private final static String ASCENDING="asc" ;
+    private final static String DESCENDING="desc" ;
+    private final static String ORDER_TYPE_ERROR_MESSAGE=" Recieved OrderType is : %s .\nOrder Type must be asc or desc.";
 
     @Autowired
     public IssueController(IssueService issueService, LabelsOfIssueService labelsOfIssueService) {
@@ -32,8 +35,15 @@ public class IssueController {
     }
 
     @GetMapping("/issues")
-    public ResponseEntity<List<IssueDTO>> getAllIssues() {
-        return new ResponseEntity(issueService.getAllIssues(), HttpStatus.OK);
+    public ResponseEntity<List<IssueDTO>> getAllIssues(@RequestParam(required = false, defaultValue = ASCENDING, value = "orderType") String orderType) {
+        if(orderType.equalsIgnoreCase(ASCENDING)){
+            return new ResponseEntity<>(issueService.getAllIssuesOrderByCreateTime(true),HttpStatus.OK);
+        }else if(orderType.equalsIgnoreCase(DESCENDING)){
+            return new ResponseEntity<>(issueService.getAllIssuesOrderByCreateTime(false),HttpStatus.OK);
+        }else{
+            throw new InvalidQueryParameterException(String.format(ORDER_TYPE_ERROR_MESSAGE,orderType));
+        }
+
     }
 
     @GetMapping("/issue/{issueId}")
@@ -90,6 +100,7 @@ public class IssueController {
     public void deleteComment(@PathVariable Long issueId, @PathVariable Long commentId) {
         issueService.deleteComment( issueId, commentId);
     }
+
 
 
 }

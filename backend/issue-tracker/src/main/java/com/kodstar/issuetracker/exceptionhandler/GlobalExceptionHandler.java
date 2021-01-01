@@ -38,6 +38,11 @@ public class GlobalExceptionHandler {
     public String handleInvalidId(MethodArgumentTypeMismatchException e) {
         return "invalid ID supplied.\n" + e.getMessage();
     }
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(InvalidQueryParameterException.class)
+    public String handleInvalidId(InvalidQueryParameterException e) {
+        return e.getMessage();
+    }
 
     //Http Status : 404 (issue not found)
     @ResponseStatus(HttpStatus.NOT_FOUND)

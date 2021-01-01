@@ -28,5 +28,6 @@ public class IssueDTO implements Serializable {
     private String description;
     private Set<LabelDTO> labels;
     private List<CommentDTO> comments =new ArrayList<>();
+    private LocalDateTime createTime;
 
 }
