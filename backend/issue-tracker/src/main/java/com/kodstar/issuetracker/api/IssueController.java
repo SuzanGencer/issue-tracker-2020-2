@@ -76,14 +76,11 @@ public class IssueController {
         return new ResponseEntity(issueService.findALlByDescKeyword(keyword), HttpStatus.OK);
     }
 
-    @GetMapping("issues/search/label/{labelId}")
-    public ResponseEntity<List<IssueDTO>> getAllIssuesByDescKeyword(@PathVariable Long labelId) {
-        return new ResponseEntity(issueService.findALlIssuesByLabel(labelId), HttpStatus.OK);
+    @GetMapping("issues/search/label/{keyword}")
+    public ResponseEntity<List<IssueDTO>> getAllIssuesByLabelKeyword(@PathVariable String keyword) {
+        return new ResponseEntity(issueService.findALlIssuesByLabel(keyword), HttpStatus.OK);
     }
 
-    @GetMapping("issues/sort/updateTime")
-    public ResponseEntity<List<IssueDTO>> ALlIssuesSortedByUpdateTime() {
-        return new ResponseEntity(issueService.findALlIssuesSortedByUpdateTime(), HttpStatus.OK);
-    }
+
 
 }

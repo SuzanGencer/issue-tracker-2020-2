@@ -76,18 +76,10 @@ public class IssueServiceImpl implements IssueService {
     }
 
     @Override
-    public List<IssueDTO> findALlIssuesByLabel(Long labelId) {
-        List<IssueDTO> issueDTOList = fromIssueToIssueDTO.convertAll(issueRepository.findALlIssuesByLabel(labelId));
+    public List<IssueDTO> findALlIssuesByLabel(String keyword) {
+        List<IssueDTO> issueDTOList = fromIssueToIssueDTO.convertAll(issueRepository.findALlIssuesByLabel(keyword));
         return issueDTOList;
     }
-
-    @Override
-    public List<IssueDTO> findALlIssuesSortedByUpdateTime() {
-        List<Issue> issues = issueRepository.findAll(Sort.by("updateDateTime").descending());
-        List<IssueDTO> issueDTOList = fromIssueToIssueDTO.convertAll(issues);
-        return issueDTOList;
-    }
-
 
 
 

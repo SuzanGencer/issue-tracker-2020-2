@@ -30,10 +30,10 @@ public interface IssueService {
 
     List<IssueDTO> findALlByDescKeyword(String keyword);
 
-    List<IssueDTO> findALlIssuesByLabel(Long labelId);
+    List<IssueDTO> findALlIssuesByLabel(String keyword);
 
 
-    List<IssueDTO> findALlIssuesSortedByUpdateTime();
+
 
 
 }
