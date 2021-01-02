@@ -4,9 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import org.springframework.data.jpa.repository.Modifying;
 
 import javax.persistence.*;
@@ -49,17 +51,22 @@ public class Issue implements Serializable {
     @JoinTable(name = "t_issue_label", joinColumns = @JoinColumn(name = "issue_id"), inverseJoinColumns = @JoinColumn(name = "label_id"))
     private Set<Label> labels = new HashSet<>();
 
+
     @OneToMany
     @JoinTable(
-            name="IssueComments",
-            joinColumns = @JoinColumn( name="issue_id"),
-            inverseJoinColumns = @JoinColumn( name="comment_id")
+            name = "t_issue_comment",
+            joinColumns = @JoinColumn(name = "issue_id"),
+            inverseJoinColumns = @JoinColumn(name = "comment_id")
     )
     private List<Comment> comments;
 
     @CreatedDate
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime createTime;
+
+    @UpdateTimestamp
+    @Column(columnDefinition = "TIMESTAMP")
+    private LocalDateTime updateTime;
 
 
 }

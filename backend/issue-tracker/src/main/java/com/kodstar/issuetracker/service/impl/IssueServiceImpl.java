@@ -11,6 +11,7 @@ import com.kodstar.issuetracker.service.IssueService;
 import com.kodstar.issuetracker.utils.impl.FromCommentDTOToComment;
 import com.kodstar.issuetracker.utils.impl.FromIssueToIssueDTO;
 import com.kodstar.issuetracker.utils.impl.FromIssueDTOToIssue;
+import com.kodstar.issuetracker.utils.impl.FromLabelToLabelDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,16 +31,21 @@ public class IssueServiceImpl implements IssueService {
     private final ModelMapper modelMapper;
     private final FromIssueToIssueDTO fromIssueToIssueDTO;
     private final FromIssueDTOToIssue fromIssueDTOToIssue;
+    private final FromLabelToLabelDTO fromLabelToLabelDTO;
     private final CommentService commentService;
     private final FromCommentDTOToComment fromCommentDTOtoComment;
 
 
     @Autowired
-    public IssueServiceImpl(IssueRepository issueRepository, ModelMapper modelMapper, FromIssueToIssueDTO fromIssueToIssueDTO, FromIssueDTOToIssue fromIssueDTOToIssue, CommentService commentService, FromCommentDTOToComment fromCommentDTOtoComment) {
+    public IssueServiceImpl(IssueRepository issueRepository, ModelMapper modelMapper,
+                            FromIssueToIssueDTO fromIssueToIssueDTO, FromIssueDTOToIssue fromIssueDTOToIssue,
+                            FromLabelToLabelDTO fromLabelToLabelDTO, CommentService commentService,
+                            FromCommentDTOToComment fromCommentDTOtoComment) {
         this.issueRepository = issueRepository;
         this.modelMapper = modelMapper;
         this.fromIssueToIssueDTO = fromIssueToIssueDTO;
         this.fromIssueDTOToIssue = fromIssueDTOToIssue;
+        this.fromLabelToLabelDTO = fromLabelToLabelDTO;
         this.commentService = commentService;
         this.fromCommentDTOtoComment = fromCommentDTOtoComment;
     }
@@ -79,11 +85,11 @@ public class IssueServiceImpl implements IssueService {
     }
 
     @Override
-    public List<IssueDTO> findALlIssuesByLabel(Long labelId) {
-        List<IssueDTO> issueDTOList = fromIssueToIssueDTO.convertAll(issueRepository.findALlIssuesByLabel(labelId));
-        return issueDTOList; 
+    public List<IssueDTO> findALlIssuesByLabel(String keyword) {
+        List<IssueDTO> issueDTOList = fromIssueToIssueDTO.convertAll(issueRepository.findALlIssuesByLabel(keyword));
+        return issueDTOList;
     }
-  
+
     @Transactional
     @Override
     public IssueDTO addComment(Long issueId, CommentDTO commentDTO) {
@@ -111,10 +117,20 @@ public class IssueServiceImpl implements IssueService {
 
     @Override
     public List<IssueDTO> getAllIssuesOrderByCreateTime(boolean isAscending) {
-        if(isAscending){
+        if (isAscending) {
             return fromIssueToIssueDTO.convertAll(issueRepository.findAllByOrderByCreateTime());
-        }else{
+        } else {
             return fromIssueToIssueDTO.convertAll(issueRepository.findAllByOrderByCreateTimeDesc());
+        }
+
+    }
+
+    @Override
+    public List<IssueDTO> getAllIssuesOrderByUpdateTime(boolean isAscending) {
+        if (isAscending) {
+            return fromIssueToIssueDTO.convertAll(issueRepository.findAllByOrderByUpdateTime());
+        } else {
+            return fromIssueToIssueDTO.convertAll(issueRepository.findAllByOrderByUpdateTimeDesc());
         }
 
     }
