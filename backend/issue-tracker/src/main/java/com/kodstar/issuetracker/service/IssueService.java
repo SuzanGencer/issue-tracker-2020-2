@@ -42,6 +42,8 @@ public interface IssueService {
 
     List<IssueDTO> getAllIssuesOrderByUpdateTime(boolean isAscending);
 
+    List<IssueDTO> getAllIssuesSort( String orderType, String byWhichSort);
+
 
 
 }

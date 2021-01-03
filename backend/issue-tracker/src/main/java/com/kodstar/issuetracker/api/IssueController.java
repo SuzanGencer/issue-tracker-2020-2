@@ -35,37 +35,14 @@ public class IssueController {
         this.labelsOfIssueService = labelsOfIssueService;
     }
 
-    @GetMapping("/issues")
-    public ResponseEntity<List<IssueDTO>> getAllIssues(@RequestParam(required = false, defaultValue = ASCENDING, value = "orderType") String orderType,
-                                                       @RequestParam(required = false, value = "byWhichSort") String byWhichSort) {
-        if (byWhichSort == null) {
-            return new ResponseEntity<>(issueService.getAllIssues(), HttpStatus.OK);
-        }
 
-        if (byWhichSort.equalsIgnoreCase("createDate")) {
-            if (orderType.equalsIgnoreCase(ASCENDING)) {
-                return new ResponseEntity<>(issueService.getAllIssuesOrderByCreateTime(true), HttpStatus.OK);
-            } else if (orderType.equalsIgnoreCase(DESCENDING)) {
-                return new ResponseEntity<>(issueService.getAllIssuesOrderByCreateTime(false), HttpStatus.OK);
-            } else {
-                throw new InvalidQueryParameterException(String.format(ORDER_TYPE_ERROR_MESSAGE, orderType));
-            }
-        } else if (byWhichSort.equalsIgnoreCase("update")) {
-            if (orderType.equalsIgnoreCase(ASCENDING)) {
-                return new ResponseEntity<>(issueService.getAllIssuesOrderByUpdateTime(true), HttpStatus.OK);
+   @GetMapping("/issues")
+   public ResponseEntity<List<IssueDTO>> getAllIssues(@RequestParam(required = false, defaultValue = ASCENDING, value = "orderType") String orderType,
+                                                      @RequestParam(required = false, value = "byWhichSort") String byWhichSort) {
 
-            } else if (orderType.equalsIgnoreCase(DESCENDING)) {
-                return new ResponseEntity<>(issueService.getAllIssuesOrderByUpdateTime(false), HttpStatus.OK);
-            } else {
-                throw new InvalidQueryParameterException(String.format(ORDER_TYPE_ERROR_MESSAGE, orderType));
-            }
+           return new ResponseEntity<>(issueService.getAllIssuesSort(orderType,byWhichSort), HttpStatus.OK);
 
-        } else {
-            throw new InvalidQueryParameterException(String.format(ORDER_TYPE_ERROR_MESSAGE, orderType));
-        }
-
-
-    }
+   }
 
     @GetMapping("/issue/{issueId}")
     public ResponseEntity<IssueDTO> findIssueById(@PathVariable("issueId") Long issueId) {

@@ -4,6 +4,7 @@ import com.kodstar.issuetracker.dto.CommentDTO;
 import com.kodstar.issuetracker.dto.IssueDTO;
 import com.kodstar.issuetracker.entity.Comment;
 import com.kodstar.issuetracker.entity.Issue;
+import com.kodstar.issuetracker.exceptionhandler.InvalidQueryParameterException;
 import com.kodstar.issuetracker.exceptionhandler.IssueTrackerNotFoundException;
 import com.kodstar.issuetracker.repo.IssueRepository;
 import com.kodstar.issuetracker.service.CommentService;
@@ -14,8 +15,11 @@ import com.kodstar.issuetracker.utils.impl.FromIssueDTOToIssue;
 import com.kodstar.issuetracker.utils.impl.FromLabelToLabelDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,6 +38,9 @@ public class IssueServiceImpl implements IssueService {
     private final FromLabelToLabelDTO fromLabelToLabelDTO;
     private final CommentService commentService;
     private final FromCommentDTOToComment fromCommentDTOtoComment;
+    private final static String ASCENDING="asc" ;
+    private final static String DESCENDING="desc" ;
+    private final static String ORDER_TYPE_ERROR_MESSAGE=" Recieved OrderType is : %s .\nOrder Type must be asc or desc.";
 
 
     @Autowired
@@ -131,6 +138,34 @@ public class IssueServiceImpl implements IssueService {
             return fromIssueToIssueDTO.convertAll(issueRepository.findAllByOrderByUpdateTime());
         } else {
             return fromIssueToIssueDTO.convertAll(issueRepository.findAllByOrderByUpdateTimeDesc());
+        }
+
+    }
+    public List<IssueDTO> getAllIssuesSort( String orderType, String byWhichSort) {
+       if (byWhichSort == null) {
+            return getAllIssues();
+        }
+
+        if (byWhichSort.equalsIgnoreCase("createDate")) {
+            if (orderType.equalsIgnoreCase(ASCENDING)) {
+                return getAllIssuesOrderByCreateTime(true);
+            } else if (orderType.equalsIgnoreCase(DESCENDING)) {
+                return getAllIssuesOrderByCreateTime(false);
+            } else {
+                throw new InvalidQueryParameterException(String.format(ORDER_TYPE_ERROR_MESSAGE, orderType));
+            }
+        } else if (byWhichSort.equalsIgnoreCase("update")) {
+            if (orderType.equalsIgnoreCase(ASCENDING)) {
+                return getAllIssuesOrderByUpdateTime(true);
+
+            } else if (orderType.equalsIgnoreCase(DESCENDING)) {
+                return getAllIssuesOrderByUpdateTime(false);
+            } else {
+                throw new InvalidQueryParameterException(String.format(ORDER_TYPE_ERROR_MESSAGE, orderType));
+            }
+
+        } else {
+            throw new InvalidQueryParameterException(String.format(ORDER_TYPE_ERROR_MESSAGE, orderType));
         }
 
     }
