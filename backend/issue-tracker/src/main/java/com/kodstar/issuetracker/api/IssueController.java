@@ -2,6 +2,7 @@ package com.kodstar.issuetracker.api;
 
 import com.kodstar.issuetracker.dto.CommentDTO;
 import com.kodstar.issuetracker.dto.IssueDTO;
+import com.kodstar.issuetracker.exceptionhandler.InvalidQueryParameterException;
 import com.kodstar.issuetracker.entity.Comment;
 import com.kodstar.issuetracker.entity.Issue;
 import com.kodstar.issuetracker.exceptionhandler.InvalidQueryParameterException;
@@ -34,17 +35,14 @@ public class IssueController {
         this.labelsOfIssueService = labelsOfIssueService;
     }
 
-    @GetMapping("/issues")
-    public ResponseEntity<List<IssueDTO>> getAllIssues(@RequestParam(required = false, defaultValue = ASCENDING, value = "orderType") String orderType) {
-        if(orderType.equalsIgnoreCase(ASCENDING)){
-            return new ResponseEntity<>(issueService.getAllIssuesOrderByCreateTime(true),HttpStatus.OK);
-        }else if(orderType.equalsIgnoreCase(DESCENDING)){
-            return new ResponseEntity<>(issueService.getAllIssuesOrderByCreateTime(false),HttpStatus.OK);
-        }else{
-            throw new InvalidQueryParameterException(String.format(ORDER_TYPE_ERROR_MESSAGE,orderType));
-        }
 
-    }
+   @GetMapping("/issues")
+   public ResponseEntity<List<IssueDTO>> getAllIssues(@RequestParam(required = false, defaultValue = ASCENDING, value = "orderType") String orderType,
+                                                      @RequestParam(required = false, value = "byWhichSort") String byWhichSort) {
+
+           return new ResponseEntity<>(issueService.getAllIssuesSort(orderType,byWhichSort), HttpStatus.OK);
+
+   }
 
     @GetMapping("/issue/{issueId}")
     public ResponseEntity<IssueDTO> findIssueById(@PathVariable("issueId") Long issueId) {
@@ -87,20 +85,20 @@ public class IssueController {
         return new ResponseEntity(issueService.findALlByDescKeyword(keyword), HttpStatus.OK);
     }
 
-    @GetMapping("issues/search/label/{labelId}")
-    public ResponseEntity<List<IssueDTO>> getAllIssuesByLabelId(@PathVariable Long labelId) {
-        return new ResponseEntity(issueService.findALlIssuesByLabel(labelId), HttpStatus.OK);
+    @GetMapping("issues/search/label/{keyword}")
+    public ResponseEntity<List<IssueDTO>> getAllIssuesByLabelKeyword(@PathVariable String keyword) {
+        return new ResponseEntity(issueService.findALlIssuesByLabel(keyword), HttpStatus.OK);
     }
-  
+
     @PostMapping("issue/{issueId}/comment")
     public ResponseEntity<IssueDTO> addComment(@RequestBody CommentDTO commentDTO, @PathVariable Long issueId) {
         return new ResponseEntity(issueService.addComment(issueId, commentDTO), HttpStatus.OK);
     }
+
+
     @DeleteMapping("issue/{issueId}/comment/{commentId}")
     public void deleteComment(@PathVariable Long issueId, @PathVariable Long commentId) {
         issueService.deleteComment( issueId, commentId);
     }
-
-
 
 }
