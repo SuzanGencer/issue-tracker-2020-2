@@ -1,0 +1,23 @@
+.issue-cards {
+    margin-top: 20px;
+    height: 350px;
+    overflow-y: auto;
+}
+.issue-detail {
+    .card {
+        height: 350px;
+        padding-top: 20px;
+
+        .click-mask {
+            display: none;
+        }
+
+        .description-text {
+            margin-top: 30px;
+        }
+        .label {
+            position: relative;
+            top: 170px;
+        }
+    }
+}

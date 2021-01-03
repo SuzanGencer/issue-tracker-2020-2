@@ -1,0 +1,1 @@
+export const base_url = "localhost:8080/virtserver.swaggerhub.com/Kodstar/Issue_Tracker/1.0.0"
