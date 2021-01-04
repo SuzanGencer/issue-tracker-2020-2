@@ -1,25 +1,14 @@
-import React, { Component } from "react";
-import "./App.css";
-import "bootstrap/dist/css/bootstrap.min.css";
-import Navbar from "./components/Navbar";
-import ProjectBoard from "./components/ProjectBoard";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import './app.scss'
+import Issues from './component/issue/Issues'
+import { Nav } from './component/nav/Nav'
 
-import AddProjectTask from "./components/ProjectTask/AddProjectTask";
-
-class App extends Component {
-  render() {
-    return (
-      <Router>
-        <div className="App">
-          <Navbar />
-          <Route exact path="/" component={ProjectBoard} />
-
-          <Route exact path="/addProjectTask" component={AddProjectTask} />
-        </div>
-      </Router>
-    );
-  }
+function App () {
+  return (
+    <div>
+      <Nav />
+      <Issues />
+    </div>
+  )
 }
 
-export default App;
+export default App
