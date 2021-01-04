@@ -1,88 +1,98 @@
-import React from 'react'
-import { Container, Row } from 'react-bootstrap'
+import React, { useEffect, useState } from 'react'
+import { Container, Form, Navbar, Nav, Dropdown, Badge } from 'react-bootstrap'
 import Issue from '../../model/issue/Issue'
-import { getIssue } from '../../service/getIssue'
-import { getIssues } from '../../service/getIssues'
-import AddIssue from './AddIssue'
-import './issues.scss'
+import { getLabels } from '../../service/getLabels'
 
-export default class Issues extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      arr: [],
-      selectedIssue: null,
-      selectedIssueId: 0
-    }
-    this.componentDidMount = this.componentDidMount.bind(this)
-    this.componentDidUpdate = this.componentDidUpdate.bind(this)
-  }
+import './scss/issues.scss'
 
-  componentDidMount = async props => {
-    const response = await getIssues().then(res => res.data)
-    this.setState({
-      arr: response
+export default function Issues () {
+  // var _ = require('lodash')
+  let [labels, setItem] = useState([])
+  let [filteredLabels, setFilteredLabels] = useState([])
+  let [filterOfLabel, setLabelFilter] = useState('')
+  let [filterIssue, setIssueFilter] = useState('')
+
+  useEffect(() => {
+    getLabels().then(labels => {
+      setItem(labels.data)
+      setFilteredLabels(labels.data)
     })
-  }
+  }, [])
 
-  arrayEquals = (a, b) => {
-    return (
-      Array.isArray(a) &&
-      Array.isArray(b) &&
-      a.length === b.length &&
-      a.every((val, index) => val.id === b[index].id)
+  useEffect(() => {
+    let updatedLabels = []
+    labels.forEach(element =>
+      element.labelName.search(filterOfLabel) !== -1
+        ? updatedLabels.push(element)
+        : null
     )
+    setFilteredLabels([...updatedLabels])
+  }, [filterOfLabel])
+
+  const handleFilterIssue = e => {
+    setIssueFilter(e.target.value)
   }
 
-  componentDidUpdate = async props => {
-    const response = await getIssues().then(res => res.data)
-
-    if (!this.arrayEquals(response, this.state.arr)) {
-      this.setState({
-        arr: response
-      })
-    }
-  }
-
-  getIssues = () => {
-    return Array.from(this.state.arr)
-  }
-
-  showDetailedIssue = async id => {
-    let issue = await getIssue(id).then(res => res.data)
-    this.setState({ selectedIssueId: id, selectedIssue: issue })
-  }
-
-  render () {
-    return (
-      <Container>
-        <Row>
-          <AddIssue />
-          <div className='issue-cards col-6'>
-            {this.getIssues().map(issue => (
-              <Issue
-                selectedIssue={this.showDetailedIssue}
-                key={issue.id}
-                id={issue.id}
-                title={issue.title}
-                description={issue.description}
-                labels={issue.labels}
-              />
-            ))}
+  return (
+    <Container className='issue-container'>
+      <Navbar collapseOnSelect expand='lg' bg='dark' variant='dark'>
+        <Form>
+          <Form.Check></Form.Check>
+          <div className='search-container'>
+            <Form.Control
+              className='search'
+              placeholder='(default) title: description:'
+              onChange={handleFilterIssue.bind(this)}
+              value={filterIssue}
+            ></Form.Control>
           </div>
-          <div className='issue-detail col-6'>
-            {this.state.selectedIssueId !== 0 && (
-              <Issue
-                key={this.state.selectedIssue.id}
-                id={this.state.selectedIssue.id}
-                title={this.state.selectedIssue.title}
-                description={this.state.selectedIssue.description}
-                labels={this.state.selectedIssue.labels}
-              />
-            )}
-          </div>
-        </Row>
-      </Container>
-    )
-  }
+        </Form>
+        <Navbar.Toggle aria-controls='responsive-navbar-nav' />
+        <Navbar.Collapse id='responsive-navbar-nav'>
+          <Nav className='mr-auto'></Nav>
+          <Nav>
+            <Dropdown>
+              <Dropdown.Toggle id='dropdown-basic' variant='outline-info'>
+                Label
+              </Dropdown.Toggle>
+              <Dropdown.Menu className='dropdown-container'>
+                <Form>
+                  <Form.Control
+                    type='text'
+                    placeholder='type something..'
+                    value={filterOfLabel}
+                    onChange={e => setLabelFilter(e.target.value)}
+                  ></Form.Control>
+                </Form>
+                <Dropdown.Item
+                  onClick={() => {
+                    setLabelFilter('unlabeled')
+                  }}
+                >
+                  unlabeled
+                </Dropdown.Item>
+                {filteredLabels.map(label => {
+                  return (
+                    <Dropdown.Item
+                      href=''
+                      key={label.id}
+                      onClick={() => {
+                        setLabelFilter(label.labelName)
+                      }}
+                    >
+                      <Badge style={{ backgroundColor: label.labelColor }}>
+                        {label.labelName[0].toUpperCase()}
+                      </Badge>
+                      {label.labelName}
+                    </Dropdown.Item>
+                  )
+                })}
+              </Dropdown.Menu>
+            </Dropdown>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
+      <Issue issueFilter={filterIssue}/>
+    </Container>
+  )
 }

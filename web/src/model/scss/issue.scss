@@ -1,0 +1,46 @@
+.table {
+  margin-top: 0.5px;
+  border-radius: 5px;
+  .row {
+    margin-left: 0;
+    margin-right: 0;
+    td {
+      padding: 0 20px;
+      cursor: pointer;
+      border: none;
+      border-bottom: 1px solid #5c6671;;
+
+      .check-issue-container {
+        padding-left: 0;
+        position: absolute;
+
+        form {
+          margin-top: 15px;
+        }
+      }
+      .issue-body {
+        display: inline-block;
+        position: relative;
+        padding-top: 10px;
+        word-wrap: break-word;
+        margin-left: 20px;
+
+        .description-text {
+          font-size: 13px;
+        }
+      }
+      .labels-container {
+        display: inline-block;
+        position: absolute;
+
+        .labels {
+          display: flow-root;
+          text-align: center;
+          .badge {
+            font-size: 10px;
+          }
+        }
+      }
+    }
+  }
+}

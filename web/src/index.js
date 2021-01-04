@@ -4,18 +4,19 @@ import './index.scss'
 import reportWebVitals from './reportWebVitals'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { Navigation } from './component/nav/Navigation'
 
-const Home = lazy(() => import('./App'))
-const AddIssue = lazy(() => import('./component/issue/AddIssue'))
+const Issues = lazy(() => import('./component/issue/Issues'))
 
 ReactDOM.render(
   <React.StrictMode>
+    <Navigation />
     <Router>
       <Suspense fallback={<div> Loading... </div>}>
         {' '}
         <Switch>
-          <Route exact path='/' component={Home} />{' '}
-          <Route path='/create' component={AddIssue} />{' '}
+          <Route path='/issues' component={Issues} />
+          {/* <Route path='/create' component={AddIssue} />{' '} */}
         </Switch>{' '}
       </Suspense>{' '}
     </Router>{' '}
