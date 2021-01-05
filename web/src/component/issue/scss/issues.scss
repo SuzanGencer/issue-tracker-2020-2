@@ -1,0 +1,29 @@
+.issue-container {
+  margin-top: 20px;
+  .navbar {
+    padding: 20px 20px;
+    border-radius: 5px;
+
+    .form-check {
+      display: inline-block;
+    }
+
+    .search-container {
+      display: inline-block;
+      margin-left: auto;
+      .search{
+        margin-left: 100px;
+      }
+    }
+
+    .dropdown {
+      margin-right: 105px;
+      .dropdown-menu {
+        width: 200px;
+        top: 45px;
+        left: -125px;
+        padding: 5px 10px;
+      }
+    }
+  }
+}
