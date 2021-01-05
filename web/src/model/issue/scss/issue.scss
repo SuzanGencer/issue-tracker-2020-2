@@ -8,7 +8,13 @@
       padding: 0 20px;
       cursor: pointer;
       border: none;
-      border-bottom: 1px solid #5c6671;;
+      border-bottom: 1px solid #5c6671;
+
+      .times {
+        display: inline-block;
+        padding-right: 0;
+        text-align: right;
+      }
 
       .check-issue-container {
         padding-left: 0;
@@ -24,9 +30,22 @@
         padding-top: 10px;
         word-wrap: break-word;
         margin-left: 20px;
+        top: -30%;
 
         .description-text {
           font-size: 13px;
+        }
+      }
+      .date-container {
+        color: #5c6671;
+        font-size: 12px;
+        padding-right: 10px;
+        padding-top: 10px;
+         .date, .hour{
+           display: inline-block;
+          color: #212529;
+          font-size: 14px;
+          margin-bottom: 2px;
         }
       }
       .labels-container {

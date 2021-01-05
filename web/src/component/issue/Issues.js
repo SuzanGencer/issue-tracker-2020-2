@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { Container, Form, Navbar, Nav, Dropdown, Badge } from 'react-bootstrap'
+import {
+  Container,
+  Form,
+  Navbar,
+  Nav,
+  Dropdown,
+  Badge,
+  InputGroup,
+  Button
+} from 'react-bootstrap'
 import Issue from '../../model/issue/Issue'
 import { getLabels } from '../../service/getLabels'
 
@@ -11,6 +20,8 @@ export default function Issues () {
   let [filteredLabels, setFilteredLabels] = useState([])
   let [filterOfLabel, setLabelFilter] = useState('')
   let [filterIssue, setIssueFilter] = useState('')
+  let [check, setCheck] = useState(false)
+  let [sort, setSort] = useState('')
 
   useEffect(() => {
     getLabels().then(labels => {
@@ -37,11 +48,27 @@ export default function Issues () {
     setIssueFilter('label:' + e)
   }
 
+  const handleCheckBox = e => {
+    setCheck(e.target.checked)
+  }
+
+  const sortSelections = [
+    'Newest',
+    'Oldest',
+    'Recently Updated',
+    'Least Recently Updated'
+  ]
+
   return (
     <Container className='issue-container'>
       <Navbar collapseOnSelect expand='lg' bg='dark' variant='dark'>
         <Form>
-          <Form.Check></Form.Check>
+          <Form.Check
+            checked={check}
+            onChange={e => {
+              handleCheckBox(e)
+            }}
+          ></Form.Check>
           <div className='search-container'>
             <Form.Control
               className='search'
@@ -55,15 +82,21 @@ export default function Issues () {
         <Navbar.Collapse id='responsive-navbar-nav'>
           <Nav className='mr-auto'></Nav>
           <Nav>
-          <Dropdown className='sort-dropdown'>
+            <Dropdown className='sort-dropdown'>
               <Dropdown.Toggle id='dropdown-sort' variant='outline-info'>
                 Sort
               </Dropdown.Toggle>
               <Dropdown.Menu className='sort-dropdown-container'>
-                <Dropdown.Item>Newest</Dropdown.Item>
-                <Dropdown.Item>Oldest</Dropdown.Item>
-                <Dropdown.Item>Recently Updated</Dropdown.Item>
-                <Dropdown.Item>Least Recently Updated</Dropdown.Item>
+                {sortSelections.map((s, i) => (
+                  <Dropdown.Item
+                    key={i}
+                    onClick={() => {
+                      setSort(s)
+                    }}
+                  >
+                    {s}
+                  </Dropdown.Item>
+                ))}
               </Dropdown.Menu>
             </Dropdown>
             <Dropdown className='label-dropdown'>
@@ -72,12 +105,24 @@ export default function Issues () {
               </Dropdown.Toggle>
               <Dropdown.Menu className='label-dropdown-container'>
                 <Form>
-                  <Form.Control
-                    type='text'
-                    placeholder='type something..'
-                    value={filterOfLabel}
-                    onChange={e => setLabelFilter(e.target.value)}
-                  ></Form.Control>
+                  <InputGroup>
+                    <Form.Control
+                      type='text'
+                      placeholder='type something..'
+                      value={filterOfLabel}
+                      onChange={e => setLabelFilter(e.target.value)}
+                    ></Form.Control>
+                    <InputGroup.Append>
+                      <Button
+                        onClick={() => {
+                          setLabelFilter('')
+                        }}
+                        variant='outline-secondary'
+                      >
+                        <i className='clean-icon'></i>
+                      </Button>
+                    </InputGroup.Append>
+                  </InputGroup>
                 </Form>
                 <Dropdown.Item
                   onSelect={() => {
@@ -113,7 +158,7 @@ export default function Issues () {
           </Nav>
         </Navbar.Collapse>
       </Navbar>
-      <Issue issueFilter={filterIssue} />
+      <Issue issueFilter={filterIssue} checkStatus={check} sortParams={sort} />
     </Container>
   )
 }
