@@ -14,18 +14,18 @@ INSERT INTO t_issue (id, issue_description, issue_status, issue_title, create_ti
 VALUES (700, 'New Issue', 'ACTIVE', 'myTitle', '2020-11-11', '2021-01-02');
 
 
-INSERT INTO t_label (id, label_name)
-VALUES (150, 'backend');
-INSERT INTO t_label (id, label_name)
-VALUES (250, 'web');
-INSERT INTO t_label (id, label_name)
-VALUES (350, 'test');
-INSERT INTO t_label (id, label_name)
-VALUES (450, 'control');
-INSERT INTO t_label (id, label_name)
-VALUES (550, 'bug');
-INSERT INTO t_label (id, label_name)
-VALUES (650, 'advice');
+INSERT INTO t_label (id, label_name, label_color)
+VALUES (150, 'backend', '#fbca04');
+INSERT INTO t_label (id, label_name, label_color)
+VALUES (250, 'web', '#3d155f');
+INSERT INTO t_label (id, label_name, label_color)
+VALUES (350, 'test', '#1fb1f6');
+INSERT INTO t_label (id, label_name, label_color)
+VALUES (450, 'control', '#d876e3');
+INSERT INTO t_label (id, label_name, label_color)
+VALUES (550, 'bug', '#d73a4a');
+INSERT INTO t_label (id, label_name, label_color)
+VALUES (650, 'advice', '#0075ca');
 
 INSERT INTO t_issue_label (issue_id, label_id)
 VALUES (100, 150);
