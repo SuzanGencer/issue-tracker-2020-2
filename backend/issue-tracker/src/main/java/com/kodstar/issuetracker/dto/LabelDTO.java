@@ -21,5 +21,7 @@ public class LabelDTO  implements Serializable {
         @NotBlank(message = "Label name must not be blank!")
         private String labelName;
 
+        private String labelColor;
+
 
 }
