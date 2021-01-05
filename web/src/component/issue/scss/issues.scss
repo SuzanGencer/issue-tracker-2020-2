@@ -11,18 +11,66 @@
     .search-container {
       display: inline-block;
       margin-left: auto;
-      .search{
+      .search {
         margin-left: 100px;
       }
     }
 
-    .dropdown {
+    .label-dropdown {
       margin-right: 105px;
-      .dropdown-menu {
+      .label-dropdown-container {
         width: 200px;
         top: 45px;
         left: -125px;
-        padding: 5px 10px;
+        padding: 10px;
+        text-align: left;
+        border-radius: 5px;
+        background-color: #212529;
+        form {
+          padding: 2px;
+          .form-control {
+            background-color: #212529;
+            color: #eee;
+            border-color: #343a40;
+          }
+        }
+        .dropdown-item {
+          padding-left: 20px;
+          background-color: #212529;
+          color: #eee;
+          border-radius: 3px;
+          .badge {
+            margin-right: 10px;
+          }
+        }
+        .dropdown-item:hover {
+          background-color: #343a40;
+        }
+      }
+    }
+    .sort-dropdown {
+      margin-right: 20px;
+      .sort-dropdown-container {
+        width: 220px;
+        top: 45px;
+        left: -145px;
+        padding: 10px;
+        text-align: left;
+        border-radius: 5px;
+        background-color: #212529;
+        .dropdown-item {
+          background-color: #212529;
+          border-radius: 3px;
+          padding: 5px;
+          color: #eee;
+        }
+        .dropdown-item:hover {
+          background-color: #343a40;
+        }
+        .dropdown-divider {
+          margin: 0;
+          border-color: #343a40;
+        }
       }
     }
   }

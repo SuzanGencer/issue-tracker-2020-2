@@ -3,7 +3,7 @@ import { Badge, Form, Table } from 'react-bootstrap'
 import { getIssues } from '../../service/getIssues'
 import { getFilteredIssues } from '../../service/getFilteredIssues'
 
-import '../scss/issue.scss'
+import './scss/issue.scss'
 
 export default function Issue (props) {
   let [issues, setIssue] = useState([])
