@@ -33,6 +33,10 @@ export default function Issues () {
     setIssueFilter(e.target.value)
   }
 
+  const handleLabelSelection = e => {
+    setIssueFilter('label:' + e)
+  }
+
   return (
     <Container className='issue-container'>
       <Navbar collapseOnSelect expand='lg' bg='dark' variant='dark'>
@@ -41,7 +45,7 @@ export default function Issues () {
           <div className='search-container'>
             <Form.Control
               className='search'
-              placeholder='(default) title: description:'
+              placeholder='title(default):  description:  label:'
               onChange={handleFilterIssue.bind(this)}
               value={filterIssue}
             ></Form.Control>
@@ -51,11 +55,22 @@ export default function Issues () {
         <Navbar.Collapse id='responsive-navbar-nav'>
           <Nav className='mr-auto'></Nav>
           <Nav>
-            <Dropdown>
-              <Dropdown.Toggle id='dropdown-basic' variant='outline-info'>
+          <Dropdown className='sort-dropdown'>
+              <Dropdown.Toggle id='dropdown-sort' variant='outline-info'>
+                Sort
+              </Dropdown.Toggle>
+              <Dropdown.Menu className='sort-dropdown-container'>
+                <Dropdown.Item>Newest</Dropdown.Item>
+                <Dropdown.Item>Oldest</Dropdown.Item>
+                <Dropdown.Item>Recently Updated</Dropdown.Item>
+                <Dropdown.Item>Least Recently Updated</Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+            <Dropdown className='label-dropdown'>
+              <Dropdown.Toggle id='dropdown-label' variant='outline-info'>
                 Label
               </Dropdown.Toggle>
-              <Dropdown.Menu className='dropdown-container'>
+              <Dropdown.Menu className='label-dropdown-container'>
                 <Form>
                   <Form.Control
                     type='text'
@@ -65,6 +80,9 @@ export default function Issues () {
                   ></Form.Control>
                 </Form>
                 <Dropdown.Item
+                  onSelect={() => {
+                    handleLabelSelection('')
+                  }}
                   onClick={() => {
                     setLabelFilter('unlabeled')
                   }}
@@ -74,6 +92,9 @@ export default function Issues () {
                 {filteredLabels.map(label => {
                   return (
                     <Dropdown.Item
+                      onSelect={() => {
+                        handleLabelSelection(label.labelName)
+                      }}
                       href=''
                       key={label.id}
                       onClick={() => {
@@ -92,7 +113,7 @@ export default function Issues () {
           </Nav>
         </Navbar.Collapse>
       </Navbar>
-      <Issue issueFilter={filterIssue}/>
+      <Issue issueFilter={filterIssue} />
     </Container>
   )
 }
