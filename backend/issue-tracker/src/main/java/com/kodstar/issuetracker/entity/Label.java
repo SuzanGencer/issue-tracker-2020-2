@@ -23,5 +23,8 @@ public class Label {
     @Column()
     private String labelName;
 
+    @Column()
+    private String labelColor;
+
 
 }

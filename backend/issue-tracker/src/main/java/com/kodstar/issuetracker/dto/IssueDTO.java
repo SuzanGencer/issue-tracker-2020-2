@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -26,5 +27,6 @@ public class IssueDTO implements Serializable {
     private List<CommentDTO> comments =new ArrayList<>();
     private LocalDateTime createTime;
     private StateDTO state;
+    private LocalDateTime updateTime;
 
 }
