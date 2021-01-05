@@ -141,6 +141,7 @@ public class IssueServiceImpl implements IssueService {
         }
 
     }
+
     public List<IssueDTO> getAllIssuesSort( String orderType, String byWhichSort) {
        if (byWhichSort == null) {
             return getAllIssues();
