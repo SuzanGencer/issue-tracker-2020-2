@@ -141,12 +141,12 @@ public class IssueServiceImpl implements IssueService {
     @Override
     public IssueDTO updateState(Long issueId, Long stateId) {
         Issue issue = issueRepository.findById(issueId)
-                .orElseThrow(()->new IssueTrackerNotFoundException("Issue",issueId.toString()));
+                .orElseThrow(() -> new IssueTrackerNotFoundException("Issue", issueId.toString()));
         State state = stateRepository.findById(stateId)
-                .orElseThrow(()->new IssueTrackerNotFoundException("State",stateId.toString()));
+                .orElseThrow(() -> new IssueTrackerNotFoundException("State", stateId.toString()));
         issue.setState(state);
         return fromIssueToIssueDTO.convert(issueRepository.save(issue));
-
+    }
     public List<IssueDTO> getAllIssuesOrderByUpdateTime(boolean isAscending) {
         if (isAscending) {
             return fromIssueToIssueDTO.convertAll(issueRepository.findAllByOrderByUpdateTime());
@@ -155,6 +155,7 @@ public class IssueServiceImpl implements IssueService {
         }
 
     }
+
     public List<IssueDTO> getAllIssuesSort( String orderType, String byWhichSort) {
        if (byWhichSort == null) {
             return getAllIssues();
