@@ -2,9 +2,6 @@ package com.kodstar.issuetracker.service;
 
 import com.kodstar.issuetracker.dto.CommentDTO;
 import com.kodstar.issuetracker.dto.IssueDTO;
-import com.kodstar.issuetracker.entity.Comment;
-import com.kodstar.issuetracker.entity.Issue;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -35,6 +32,8 @@ public interface IssueService {
     void deleteComment(Long issueId,Long commentId);
 
     List<IssueDTO> getAllIssuesOrderByCreateTime(boolean isAscending);
+
+    IssueDTO updateState(Long issueId, Long stateId);
 
 
 

@@ -4,8 +4,10 @@ import com.kodstar.issuetracker.dto.CommentDTO;
 import com.kodstar.issuetracker.dto.IssueDTO;
 import com.kodstar.issuetracker.entity.Comment;
 import com.kodstar.issuetracker.entity.Issue;
+import com.kodstar.issuetracker.entity.State;
 import com.kodstar.issuetracker.exceptionhandler.IssueTrackerNotFoundException;
 import com.kodstar.issuetracker.repo.IssueRepository;
+import com.kodstar.issuetracker.repo.StateRepository;
 import com.kodstar.issuetracker.service.CommentService;
 import com.kodstar.issuetracker.service.IssueService;
 import com.kodstar.issuetracker.utils.impl.FromCommentDTOToComment;
@@ -16,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -32,16 +33,20 @@ public class IssueServiceImpl implements IssueService {
     private final FromIssueDTOToIssue fromIssueDTOToIssue;
     private final CommentService commentService;
     private final FromCommentDTOToComment fromCommentDTOtoComment;
+    private final StateRepository stateRepository;
 
 
     @Autowired
-    public IssueServiceImpl(IssueRepository issueRepository, ModelMapper modelMapper, FromIssueToIssueDTO fromIssueToIssueDTO, FromIssueDTOToIssue fromIssueDTOToIssue, CommentService commentService, FromCommentDTOToComment fromCommentDTOtoComment) {
+    public IssueServiceImpl(IssueRepository issueRepository, ModelMapper modelMapper, FromIssueToIssueDTO fromIssueToIssueDTO,
+                            FromIssueDTOToIssue fromIssueDTOToIssue, CommentService commentService, FromCommentDTOToComment fromCommentDTOtoComment,
+                            StateRepository stateRepository) {
         this.issueRepository = issueRepository;
         this.modelMapper = modelMapper;
         this.fromIssueToIssueDTO = fromIssueToIssueDTO;
         this.fromIssueDTOToIssue = fromIssueDTOToIssue;
         this.commentService = commentService;
         this.fromCommentDTOtoComment = fromCommentDTOtoComment;
+        this.stateRepository = stateRepository;
     }
 
     @Override
@@ -117,6 +122,16 @@ public class IssueServiceImpl implements IssueService {
             return fromIssueToIssueDTO.convertAll(issueRepository.findAllByOrderByCreateTimeDesc());
         }
 
+    }
+
+    @Override
+    public IssueDTO updateState(Long issueId, Long stateId) {
+        Issue issue = issueRepository.findById(issueId)
+                .orElseThrow(()->new IssueTrackerNotFoundException("Issue",issueId.toString()));
+        State state = stateRepository.findById(stateId)
+                .orElseThrow(()->new IssueTrackerNotFoundException("State",stateId.toString()));
+        issue.setState(state);
+        return fromIssueToIssueDTO.convert(issueRepository.save(issue));
     }
 
     @Override

@@ -2,12 +2,9 @@ package com.kodstar.issuetracker.api;
 
 import com.kodstar.issuetracker.dto.CommentDTO;
 import com.kodstar.issuetracker.dto.IssueDTO;
-import com.kodstar.issuetracker.entity.Comment;
-import com.kodstar.issuetracker.entity.Issue;
 import com.kodstar.issuetracker.exceptionhandler.InvalidQueryParameterException;
 import com.kodstar.issuetracker.service.IssueService;
 import com.kodstar.issuetracker.service.LabelsOfIssueService;
-import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,14 +40,12 @@ public class IssueController {
         }else{
             throw new InvalidQueryParameterException(String.format(ORDER_TYPE_ERROR_MESSAGE,orderType));
         }
-
     }
 
     @GetMapping("/issue/{issueId}")
     public ResponseEntity<IssueDTO> findIssueById(@PathVariable("issueId") Long issueId) {
         return new ResponseEntity(issueService.findById(issueId), HttpStatus.OK);
     }
-
 
     @PostMapping("/issue")
     public ResponseEntity<IssueDTO> createIssue(@Valid @NonNull @RequestBody IssueDTO issue) {
@@ -101,6 +96,8 @@ public class IssueController {
         issueService.deleteComment( issueId, commentId);
     }
 
-
-
+    @PutMapping("issue/{issueId}/state/{stateId}")
+    public ResponseEntity<IssueDTO> updateStateOfIssue(@PathVariable Long issueId, @PathVariable Long stateId) {
+        return new ResponseEntity(issueService.updateState(issueId, stateId), HttpStatus.OK);
+    }
 }
