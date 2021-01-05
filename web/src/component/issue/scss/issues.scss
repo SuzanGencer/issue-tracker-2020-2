@@ -33,6 +33,15 @@
             color: #eee;
             border-color: #343a40;
           }
+
+          .clean-icon {
+            content: url('../../../asset/clean.svg');
+            width: 1.2rem;
+            height: 1.2rem;
+          }
+          .btn {
+            padding: 5px 10px;
+          }
         }
         .dropdown-item {
           padding-left: 20px;
@@ -49,7 +58,7 @@
       }
     }
     .sort-dropdown {
-      margin-right: 20px;
+      margin-right: 70px;
       .sort-dropdown-container {
         width: 220px;
         top: 45px;
