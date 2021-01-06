@@ -118,7 +118,7 @@ public class IssueServiceImpl implements IssueService {
         Issue issue = issueRepository.findById(issueId)
                 .orElseThrow(()->new IssueTrackerNotFoundException("Issue",issueId.toString()));
         Optional<Comment> comment=issue.getComments().stream()
-                .filter(x->x.getId()==commentId)
+                .filter(x-> x.getId().equals(commentId))
                 .findFirst();
         if(comment.isPresent()){
             issue.getComments().remove(comment.get());
