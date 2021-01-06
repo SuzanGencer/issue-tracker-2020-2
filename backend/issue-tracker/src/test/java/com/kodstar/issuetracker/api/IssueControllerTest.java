@@ -54,7 +54,7 @@ class IssueControllerTest {
 
     @BeforeEach
     void setUp() {
-        Label label = new Label(450L, "testLabel");
+        Label label = new Label(450L, "testLabel","");
         Set<Label> labels = new HashSet<>();
         labels.add(label);
         issue = new Issue();
@@ -63,7 +63,7 @@ class IssueControllerTest {
         issue.setDescription("Test text");
         issue.setLabels(labels);
 
-        LabelDTO labelDTO = new LabelDTO(45L, "testLabelDTO");
+        LabelDTO labelDTO = new LabelDTO(45L, "testLabelDTO", "White");
         Set<LabelDTO> labelDTOSet = new HashSet<>();
         labelDTOSet.add(labelDTO);
         //issueDTO = new IssueDTO(777L, "testTitle", "desc Test", labelDTOSet);
@@ -94,9 +94,9 @@ class IssueControllerTest {
 
     @Test
     public void TestGetAllLabelsShouldReturnAJsonObject() throws Exception {
-        LabelDTO label1 = new LabelDTO(45L, "testLabel1");
-        LabelDTO label2 = new LabelDTO(55L, "testLabel2");
-        LabelDTO label3 = new LabelDTO(65L, "testLabel3");
+        LabelDTO label1 = new LabelDTO(45L, "testLabel1","");
+        LabelDTO label2 = new LabelDTO(55L, "testLabel2","");
+        LabelDTO label3 = new LabelDTO(65L, "testLabel3","");
 
         Set<LabelDTO> labelDTOSet = new HashSet<>();
 

@@ -1,8 +1,9 @@
 package com.kodstar.issuetracker.auth;
 
-import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 
 
-public interface ApplicationUserDAO {
-     Optional<ApplicationUser> selectApplicationUserByUsername(String username);
+public interface ApplicationUserDAO extends CrudRepository<ApplicationUser, Long> {
+     ApplicationUser findByUsername(String username);
 }
