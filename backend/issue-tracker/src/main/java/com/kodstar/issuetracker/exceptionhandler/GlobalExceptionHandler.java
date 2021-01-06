@@ -83,7 +83,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(DataIntegrityViolationException.class)
     public String handleIssueIsExist(DataIntegrityViolationException e) {
-        return "Issue is already exist.";
+        return "This is already exist.";
     }
 
 }

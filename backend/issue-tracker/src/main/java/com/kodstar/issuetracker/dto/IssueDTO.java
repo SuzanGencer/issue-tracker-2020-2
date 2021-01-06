@@ -1,12 +1,9 @@
 package com.kodstar.issuetracker.dto;
 
-import com.kodstar.issuetracker.entity.Comment;
-import com.kodstar.issuetracker.entity.Label;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.lang.Nullable;
 
 import java.util.HashSet;
 import javax.validation.constraints.NotBlank;
@@ -29,6 +26,7 @@ public class IssueDTO implements Serializable {
     private Set<LabelDTO> labels;
     private List<CommentDTO> comments =new ArrayList<>();
     private LocalDateTime createTime;
+    private StateDTO state;
     private LocalDateTime updateTime;
 
 }

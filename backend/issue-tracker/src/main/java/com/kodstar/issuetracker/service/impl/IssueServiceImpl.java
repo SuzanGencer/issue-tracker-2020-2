@@ -4,9 +4,11 @@ import com.kodstar.issuetracker.dto.CommentDTO;
 import com.kodstar.issuetracker.dto.IssueDTO;
 import com.kodstar.issuetracker.entity.Comment;
 import com.kodstar.issuetracker.entity.Issue;
+import com.kodstar.issuetracker.entity.State;
 import com.kodstar.issuetracker.exceptionhandler.InvalidQueryParameterException;
 import com.kodstar.issuetracker.exceptionhandler.IssueTrackerNotFoundException;
 import com.kodstar.issuetracker.repo.IssueRepository;
+import com.kodstar.issuetracker.repo.StateRepository;
 import com.kodstar.issuetracker.service.CommentService;
 import com.kodstar.issuetracker.service.IssueService;
 import com.kodstar.issuetracker.utils.impl.FromCommentDTOToComment;
@@ -21,7 +23,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -38,6 +39,9 @@ public class IssueServiceImpl implements IssueService {
     private final FromLabelToLabelDTO fromLabelToLabelDTO;
     private final CommentService commentService;
     private final FromCommentDTOToComment fromCommentDTOtoComment;
+
+    private final StateRepository stateRepository;
+
     private final static String ASCENDING="asc" ;
     private final static String DESCENDING="desc" ;
     private final static String ORDER_TYPE_ERROR_MESSAGE=" Recieved OrderType is : %s .\nOrder Type must be asc or desc.";
@@ -47,7 +51,8 @@ public class IssueServiceImpl implements IssueService {
     public IssueServiceImpl(IssueRepository issueRepository, ModelMapper modelMapper,
                             FromIssueToIssueDTO fromIssueToIssueDTO, FromIssueDTOToIssue fromIssueDTOToIssue,
                             FromLabelToLabelDTO fromLabelToLabelDTO, CommentService commentService,
-                            FromCommentDTOToComment fromCommentDTOtoComment) {
+                            FromCommentDTOToComment fromCommentDTOtoComment,StateRepository stateRepository) {
+
         this.issueRepository = issueRepository;
         this.modelMapper = modelMapper;
         this.fromIssueToIssueDTO = fromIssueToIssueDTO;
@@ -55,6 +60,7 @@ public class IssueServiceImpl implements IssueService {
         this.fromLabelToLabelDTO = fromLabelToLabelDTO;
         this.commentService = commentService;
         this.fromCommentDTOtoComment = fromCommentDTOtoComment;
+        this.stateRepository = stateRepository;
     }
 
     @Override
@@ -133,6 +139,14 @@ public class IssueServiceImpl implements IssueService {
     }
 
     @Override
+    public IssueDTO updateState(Long issueId, Long stateId) {
+        Issue issue = issueRepository.findById(issueId)
+                .orElseThrow(() -> new IssueTrackerNotFoundException("Issue", issueId.toString()));
+        State state = stateRepository.findById(stateId)
+                .orElseThrow(() -> new IssueTrackerNotFoundException("State", stateId.toString()));
+        issue.setState(state);
+        return fromIssueToIssueDTO.convert(issueRepository.save(issue));
+    }
     public List<IssueDTO> getAllIssuesOrderByUpdateTime(boolean isAscending) {
         if (isAscending) {
             return fromIssueToIssueDTO.convertAll(issueRepository.findAllByOrderByUpdateTime());
@@ -141,6 +155,7 @@ public class IssueServiceImpl implements IssueService {
         }
 
     }
+
     public List<IssueDTO> getAllIssuesSort( String orderType, String byWhichSort) {
        if (byWhichSort == null) {
             return getAllIssues();
@@ -167,7 +182,6 @@ public class IssueServiceImpl implements IssueService {
         } else {
             throw new InvalidQueryParameterException(String.format(ORDER_TYPE_ERROR_MESSAGE, orderType));
         }
-
     }
 
     @Override
