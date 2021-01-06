@@ -13,6 +13,9 @@ VALUES (600, 'My issue', 'ACTIVE', 'Issue1', '2020-02-12', '2020-10-12');
 INSERT INTO t_issue (id, issue_description, issue_status, issue_title, create_time, update_time)
 VALUES (700, 'New Issue', 'ACTIVE', 'myTitle', '2020-11-11', '2021-01-02');
 
+INSERT INTO t_users (id,username,password)
+VALUES(1000,'admin', '$2a$10$aeitEKuiSR3UTfptRklbBOd7zpzrWi3iDjSyGKMR2LbJgmEJOpxB');
+
 
 INSERT INTO t_label (id, label_name, label_color)
 VALUES (150, 'backend', '#fbca04');
