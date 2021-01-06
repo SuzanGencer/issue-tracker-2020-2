@@ -2,6 +2,7 @@ package com.kodstar.issuetracker.service;
 
 import com.kodstar.issuetracker.dto.CommentDTO;
 import com.kodstar.issuetracker.dto.IssueDTO;
+
 import com.kodstar.issuetracker.entity.Comment;
 import com.kodstar.issuetracker.entity.Issue;
 import org.springframework.data.domain.Page;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.RequestParam;
+
 
 import java.util.List;
 
@@ -40,9 +42,12 @@ public interface IssueService {
 
     List<IssueDTO> getAllIssuesOrderByCreateTime(boolean isAscending);
 
+    IssueDTO updateState(Long issueId, Long stateId);
+
     List<IssueDTO> getAllIssuesOrderByUpdateTime(boolean isAscending);
 
     List<IssueDTO> getAllIssuesSort( String orderType, String byWhichSort);
+
 
 
 

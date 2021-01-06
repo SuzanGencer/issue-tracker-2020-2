@@ -8,14 +8,11 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import org.springframework.data.jpa.repository.Modifying;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -64,9 +61,12 @@ public class Issue implements Serializable {
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime createTime;
 
+    @ManyToOne
+    @JoinTable(name = "t_issue_state", joinColumns = @JoinColumn(name = "issue_id"), inverseJoinColumns = @JoinColumn(name = "state_id"))
+    private State state;
+
     @UpdateTimestamp
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime updateTime;
-
 
 }
