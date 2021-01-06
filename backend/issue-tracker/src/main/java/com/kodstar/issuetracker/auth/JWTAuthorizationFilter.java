@@ -1,4 +1,4 @@
-package com.kodstar.issuetracker.jwt;
+package com.kodstar.issuetracker.auth;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;

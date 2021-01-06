@@ -1,4 +1,4 @@
-package com.kodstar.issuetracker.jwt;
+package com.kodstar.issuetracker.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kodstar.issuetracker.auth.ApplicationUser;

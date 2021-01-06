@@ -3,9 +3,9 @@ package com.kodstar.issuetracker.security;
 
 
 
-import com.kodstar.issuetracker.jwt.JWTAuthenticationFilter;
-import com.kodstar.issuetracker.jwt.JWTAuthorizationFilter;
-import com.kodstar.issuetracker.jwt.UserDetailsServiceImpl;
+import com.kodstar.issuetracker.auth.JWTAuthenticationFilter;
+import com.kodstar.issuetracker.auth.JWTAuthorizationFilter;
+import com.kodstar.issuetracker.auth.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
