@@ -71,5 +71,15 @@ public class LabelServiceImpl implements LabelService {
         return newLabelDTO;
     }
 
+    @Override
+    public LabelDTO getLabelById(Long labelId) {
+        Label label = labelRepository.findById(labelId)
+                .orElseThrow(NoSuchElementException::new);
+
+        LabelDTO labelDTO = fromLabelToLabelDTO.convert(label);
+
+        return labelDTO;
+    }
+
 
 }

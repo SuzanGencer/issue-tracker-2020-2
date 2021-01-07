@@ -1,27 +1,26 @@
 package com.kodstar.issuetracker.service.impl;
 
+import com.kodstar.issuetracker.auth.User;
 import com.kodstar.issuetracker.dto.CommentDTO;
 import com.kodstar.issuetracker.dto.IssueDTO;
+import com.kodstar.issuetracker.dto.UserDTO;
 import com.kodstar.issuetracker.entity.Comment;
 import com.kodstar.issuetracker.entity.Issue;
+import com.kodstar.issuetracker.entity.Label;
 import com.kodstar.issuetracker.entity.State;
 import com.kodstar.issuetracker.exceptionhandler.InvalidQueryParameterException;
 import com.kodstar.issuetracker.exceptionhandler.IssueTrackerNotFoundException;
 import com.kodstar.issuetracker.repo.IssueRepository;
+import com.kodstar.issuetracker.repo.LabelRepository;
 import com.kodstar.issuetracker.repo.StateRepository;
+import com.kodstar.issuetracker.repo.UserRepository;
 import com.kodstar.issuetracker.service.CommentService;
 import com.kodstar.issuetracker.service.IssueService;
-import com.kodstar.issuetracker.utils.impl.FromCommentDTOToComment;
-import com.kodstar.issuetracker.utils.impl.FromIssueToIssueDTO;
-import com.kodstar.issuetracker.utils.impl.FromIssueDTOToIssue;
-import com.kodstar.issuetracker.utils.impl.FromLabelToLabelDTO;
+import com.kodstar.issuetracker.utils.impl.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -33,10 +32,15 @@ public class IssueServiceImpl implements IssueService {
 
 
     private final IssueRepository issueRepository;
+    private final LabelRepository labelRepository;
+    private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final FromIssueToIssueDTO fromIssueToIssueDTO;
     private final FromIssueDTOToIssue fromIssueDTOToIssue;
     private final FromLabelToLabelDTO fromLabelToLabelDTO;
+    private final FromLabelDTOToLabel fromLabelDTOToLabel;
+    private final FromUserToUserDTO fromUserToUserDTO;
+    private final FromUserDTOToUser fromUserDTOToUser;
     private final CommentService commentService;
     private final FromCommentDTOToComment fromCommentDTOtoComment;
 
@@ -48,16 +52,21 @@ public class IssueServiceImpl implements IssueService {
 
 
     @Autowired
-    public IssueServiceImpl(IssueRepository issueRepository, ModelMapper modelMapper,
+    public IssueServiceImpl(IssueRepository issueRepository, LabelRepository labelRepository, UserRepository userRepository, ModelMapper modelMapper,
                             FromIssueToIssueDTO fromIssueToIssueDTO, FromIssueDTOToIssue fromIssueDTOToIssue,
-                            FromLabelToLabelDTO fromLabelToLabelDTO, CommentService commentService,
-                            FromCommentDTOToComment fromCommentDTOtoComment,StateRepository stateRepository) {
+                            FromLabelToLabelDTO fromLabelToLabelDTO, FromLabelDTOToLabel fromLabelDTOToLabel, FromUserToUserDTO fromUserToUserDTO, FromUserDTOToUser fromUserDTOToUser, CommentService commentService,
+                            FromCommentDTOToComment fromCommentDTOtoComment, StateRepository stateRepository) {
 
         this.issueRepository = issueRepository;
+        this.labelRepository = labelRepository;
+        this.userRepository = userRepository;
         this.modelMapper = modelMapper;
         this.fromIssueToIssueDTO = fromIssueToIssueDTO;
         this.fromIssueDTOToIssue = fromIssueDTOToIssue;
         this.fromLabelToLabelDTO = fromLabelToLabelDTO;
+        this.fromLabelDTOToLabel = fromLabelDTOToLabel;
+        this.fromUserToUserDTO = fromUserToUserDTO;
+        this.fromUserDTOToUser = fromUserDTOToUser;
         this.commentService = commentService;
         this.fromCommentDTOtoComment = fromCommentDTOtoComment;
         this.stateRepository = stateRepository;
@@ -183,6 +192,29 @@ public class IssueServiceImpl implements IssueService {
             throw new InvalidQueryParameterException(String.format(ORDER_TYPE_ERROR_MESSAGE, orderType));
         }
     }
+    @Override
+    public IssueDTO removeLabelFromIssue(Long labelId, Long issueId) {
+
+        labelRepository.removeLabelFromIssue(labelId, issueId);
+
+        Issue newIssue = issueRepository.findById(issueId)
+                .orElseThrow(NoSuchElementException::new);
+        return fromIssueToIssueDTO.convert(newIssue);
+    }
+
+
+
+    @Override
+    public IssueDTO addLabel(Long labelId,Long issueId) {
+        Issue issue = issueRepository.findById(issueId)
+                .orElseThrow(NoSuchElementException::new);
+
+       Label label = labelRepository.findById(labelId)
+                .orElseThrow(NoSuchElementException::new);
+
+        issue.getLabels().add(label);
+        return fromIssueToIssueDTO.convert(issueRepository.save(issue));
+    }
 
     @Override
     public IssueDTO editIssue(Long issueId, IssueDTO issue) {
@@ -209,5 +241,26 @@ public class IssueServiceImpl implements IssueService {
         for (Long id : selectedIssueIds) {
             deleteIssue(id);
         }
+    }
+
+    @Override
+    public IssueDTO addAssignee(Long userId, Long issueId) {
+        Issue issue = issueRepository.findById(issueId)
+                .orElseThrow(NoSuchElementException::new);
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(NoSuchElementException::new);
+
+        issue.getAssignees().add(user);
+        return fromIssueToIssueDTO.convert(issueRepository.save(issue));
+    }
+
+    @Override
+    public IssueDTO removeAssigneeFromIssue(Long userId, Long issueId) {
+
+        userRepository.removeAssigneeFromIssue(userId, issueId);
+        Issue newIssue = issueRepository.findById(issueId)
+                .orElseThrow(NoSuchElementException::new);
+        return fromIssueToIssueDTO.convert(newIssue);
     }
 }

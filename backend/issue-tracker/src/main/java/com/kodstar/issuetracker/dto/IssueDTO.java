@@ -1,5 +1,6 @@
 package com.kodstar.issuetracker.dto;
 
+import com.kodstar.issuetracker.auth.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,5 +29,6 @@ public class IssueDTO implements Serializable {
     private LocalDateTime createTime;
     private StateDTO state;
     private LocalDateTime updateTime;
+    private Set<User> assignees = new HashSet<>();
 
 }

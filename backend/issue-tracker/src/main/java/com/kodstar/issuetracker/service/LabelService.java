@@ -18,4 +18,5 @@ public interface LabelService {
     LabelDTO editLabel(Long labelId, LabelDTO labelDTO);
 
 
+    LabelDTO getLabelById(Long labelId);
 }

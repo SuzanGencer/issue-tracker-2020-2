@@ -44,23 +44,23 @@ public class GlobalExceptionHandler {
         return e.getMessage();
     }
 
-    //Http Status : 404 (issue not found)
+    //Http Status : 404 (entity not found)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NoSuchElementException.class)
-    public String handleNotExistIssue(NoSuchElementException e) {
+    public String handleNotExistEntity(NoSuchElementException e) {
         return "Issue not Found!There is no issue with this ID.";
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(IssueTrackerNotFoundException.class)
-    public String handleNotExistIssue(IssueTrackerNotFoundException e) {
+    public String handleNotExistEntity(IssueTrackerNotFoundException e) {
         return e.getMessage();
     }
 
     //Http Status : 404 (Order not found)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(EmptyResultDataAccessException.class)
-    public String handleNotExistIssueDelete(EmptyResultDataAccessException e) {
+    public String handleNotExistEntityDelete(EmptyResultDataAccessException e) {
         return "Order not found";
     }
 
@@ -79,10 +79,10 @@ public class GlobalExceptionHandler {
         return "Invalid values.\n" + e.getMessage();
     }
 
-    //Http Status : 409 (conflict) ++
+//    //Http Status : 409 (conflict) ++
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public String handleIssueIsExist(DataIntegrityViolationException e) {
+    public String handleEntityIsExist(DataIntegrityViolationException e) {
         return "This is already exist.";
     }
 

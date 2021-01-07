@@ -15,6 +15,12 @@ VALUES (700, 'New Issue', 'ACTIVE', 'myTitle', '2020-11-11', '2021-01-02');
 
 INSERT INTO t_users (id, username, password)
 VALUES (1000, 'Kodstar', '$2a$10$2wjebL7o4No1w3DSfTFtxO4z5C7546BACzUlxSN8vW74v0cgVKLbC');
+INSERT INTO t_users (id, username, password)
+VALUES (2000, 'admin', '$2a$10$2wjebL7o4No1w3DSfTFtxO4z5C7546BACzUlxSN8vW74v0cgVKLbC');
+INSERT INTO t_users (id, username, password)
+VALUES (3000, 'user1', '$2a$10$2wjebL7o4No1w3DSfTFtxO4z5C7546BACzUlxSN8vW74v0cgVKLbC');
+INSERT INTO t_users (id, username, password)
+VALUES (4000, 'user2', '$2a$10$2wjebL7o4No1w3DSfTFtxO4z5C7546BACzUlxSN8vW74v0cgVKLbC');
 
 
 INSERT INTO t_label (id, label_name, label_color)
@@ -94,4 +100,28 @@ INSERT INTO t_issue_comment (issue_id, comment_id)
 VALUES (600, 655);
 INSERT INTO t_issue_comment (issue_id, comment_id)
 VALUES (700, 755);
+
+INSERT INTO t_issue_assignee (issue_id, user_id)
+VALUES (100, 1000);
+INSERT INTO t_issue_assignee (issue_id, user_id)
+VALUES (100, 2000);
+INSERT INTO t_issue_assignee (issue_id, user_id)
+VALUES (200, 2000);
+INSERT INTO t_issue_assignee (issue_id, user_id)
+VALUES (200, 3000);
+INSERT INTO t_issue_assignee (issue_id, user_id)
+VALUES (300, 1000);
+INSERT INTO t_issue_assignee (issue_id, user_id)
+VALUES (400, 3000);
+INSERT INTO t_issue_assignee (issue_id, user_id)
+VALUES (500, 3000);
+INSERT INTO t_issue_assignee (issue_id, user_id)
+VALUES (600, 4000);
+INSERT INTO t_issue_assignee (issue_id, user_id)
+VALUES (700, 1000);
+INSERT INTO t_issue_assignee (issue_id, user_id)
+VALUES (700, 2000);
+INSERT INTO t_issue_assignee (issue_id, user_id)
+VALUES (500, 4000);
+
 
