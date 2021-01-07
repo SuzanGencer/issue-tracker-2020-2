@@ -30,6 +30,10 @@ public class LabelController {
     public ResponseEntity<Set<LabelDTO>> getAllLabels() {
         return new ResponseEntity(labelService.getAllLabels(), HttpStatus.OK);
     }
+    @GetMapping("label/{labelId}")
+    public ResponseEntity<Set<LabelDTO>> getLabelById(@PathVariable("labelId") Long labelId) {
+        return new ResponseEntity(labelService.getLabelById(labelId), HttpStatus.OK);
+    }
 
     @PostMapping("label")
     public ResponseEntity<LabelDTO> createLabel(@Valid @NonNull @RequestBody LabelDTO labelDTO) {

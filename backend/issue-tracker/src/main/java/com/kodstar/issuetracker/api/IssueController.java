@@ -3,12 +3,7 @@ package com.kodstar.issuetracker.api;
 import com.kodstar.issuetracker.dto.CommentDTO;
 import com.kodstar.issuetracker.dto.IssueDTO;
 
-import com.kodstar.issuetracker.exceptionhandler.InvalidQueryParameterException;
-import com.kodstar.issuetracker.entity.Comment;
-import com.kodstar.issuetracker.entity.Issue;
-import com.kodstar.issuetracker.exceptionhandler.InvalidQueryParameterException;
 import com.kodstar.issuetracker.service.IssueService;
-import com.kodstar.issuetracker.service.LabelsOfIssueService;
 import org.springframework.lang.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,15 +19,14 @@ import java.util.*;
 public class IssueController {
 
     private final IssueService issueService;
-    private final LabelsOfIssueService labelsOfIssueService;
     private final static String ASCENDING="asc" ;
     private final static String DESCENDING="desc" ;
     private final static String ORDER_TYPE_ERROR_MESSAGE=" Recieved OrderType is : %s .\nOrder Type must be asc or desc.";
 
     @Autowired
-    public IssueController(IssueService issueService, LabelsOfIssueService labelsOfIssueService) {
+    public IssueController(IssueService issueService) {
         this.issueService = issueService;
-        this.labelsOfIssueService = labelsOfIssueService;
+
     }
 
 
@@ -70,10 +64,27 @@ public class IssueController {
         issueService.deleteSelectedIssues(selectedIssueIds);
     }
 
-    @PutMapping("issue/{issueId}/{labelId}")
-    public ResponseEntity<IssueDTO> removeLabelFromIssue(@PathVariable Long labelId, @PathVariable Long issueId) {
-        return new ResponseEntity(labelsOfIssueService.removeLabelFromIssue(labelId, issueId), HttpStatus.OK);
+    @PostMapping("issue/labels/{issueId}/{labelId}")
+    public ResponseEntity<IssueDTO> addLabel(@PathVariable Long labelId, @PathVariable Long issueId) {
+        return new ResponseEntity(issueService.addLabel(labelId, issueId), HttpStatus.OK);
     }
+
+    @PutMapping("issue/labels/{issueId}/{labelId}")
+    public ResponseEntity<IssueDTO> removeLabelFromIssue(@PathVariable Long labelId, @PathVariable Long issueId) {
+        return new ResponseEntity(issueService.removeLabelFromIssue(labelId, issueId), HttpStatus.OK);
+    }
+
+    @PostMapping("issue/users/{issueId}/{userId}")
+    public ResponseEntity<IssueDTO> addAssignee(@PathVariable Long userId, @PathVariable Long issueId) {
+        return new ResponseEntity(issueService.addAssignee(userId, issueId), HttpStatus.OK);
+    }
+
+    @PutMapping("issue/users/{issueId}/{userId}")
+    public ResponseEntity<IssueDTO> removeAssigneeFromIssue(@PathVariable Long userId, @PathVariable Long issueId) {
+        return new ResponseEntity(issueService.removeAssigneeFromIssue(userId, issueId), HttpStatus.OK);
+    }
+
+
 
     @GetMapping("issues/search/title/{keyword}")
     public ResponseEntity<List<IssueDTO>> getAllIssuesByTitleKeyword(@PathVariable String keyword) {

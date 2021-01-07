@@ -3,6 +3,8 @@ package com.kodstar.issuetracker.service;
 import com.kodstar.issuetracker.dto.CommentDTO;
 import com.kodstar.issuetracker.dto.IssueDTO;
 
+import com.kodstar.issuetracker.dto.LabelDTO;
+import com.kodstar.issuetracker.dto.UserDTO;
 import com.kodstar.issuetracker.entity.Comment;
 import com.kodstar.issuetracker.entity.Issue;
 import org.springframework.data.domain.Page;
@@ -48,7 +50,11 @@ public interface IssueService {
 
     List<IssueDTO> getAllIssuesSort( String orderType, String byWhichSort);
 
+    IssueDTO addLabel(Long labelId, Long issueId);
 
+    IssueDTO removeLabelFromIssue(Long labelId, Long issueId);
 
+    IssueDTO addAssignee(Long userId, Long issueId);
 
+    IssueDTO removeAssigneeFromIssue(Long userId, Long issueId);
 }
